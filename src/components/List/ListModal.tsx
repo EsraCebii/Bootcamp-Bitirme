@@ -2,7 +2,7 @@ import * as React from "react";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -31,6 +31,12 @@ import DateTimePicker from "@mui/lab/DateTimePicker";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
+import ListChip from "./ListChip";
+
+interface ChipData {
+  key: number;
+  label: string;
+}
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -111,9 +117,9 @@ const inputStyle = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  display: 'flex',
-  alignItems: 'flex-start',
-  flexDirection: 'column',
+  display: "flex",
+  alignItems: "flex-start",
+  flexDirection: "column",
   p: 1,
   m: 1,
   borderRadius: 1,
@@ -152,6 +158,7 @@ export default function ListModal({ handleClose }: Props) {
 
     setChecked(newChecked);
   };
+
   return (
     <Paper style={{ maxHeight: 500, overflowY: "auto" }}>
       <AppBar position="static">
@@ -256,20 +263,20 @@ export default function ListModal({ handleClose }: Props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
-                <Box sx={inputStyle}   >
+                <Box sx={inputStyle}>
                   <TextField
                     required
                     id="outlined-uncontrolled"
                     label="Checklist Title"
                   />
-                     <CustomButton>Add</CustomButton>
+                  <CustomButton>Add</CustomButton>
                 </Box>
               </Modal>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton sx={{ p: 0 }}>
+              <Tooltip title="Close list">
+                <IconButton sx={{ p: 0 }} onClick={handleClose} >
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
@@ -325,7 +332,24 @@ export default function ListModal({ handleClose }: Props) {
               flexDirection: "row",
             }}
           >
-            <CommentIcon />
+            <LabelOutlinedIcon />
+            <Typography
+              sx={{ ml: 1 }}
+              variant="subtitle1"
+              gutterBottom
+              component="div"
+            >
+              Labels
+            </Typography>
+          </Box>
+          <ListChip />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <CommentOutlinedIcon />
             <Typography
               sx={{ ml: 1 }}
               variant="subtitle1"

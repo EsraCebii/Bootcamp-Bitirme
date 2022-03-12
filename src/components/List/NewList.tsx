@@ -1,33 +1,41 @@
-import { Button, TextField } from "@mui/material";
+import * as React from "react";
+import { Button, formLabelClasses, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import IconButton from "@mui/material/IconButton";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 function NewList() {
   const [isAdd, setIsAdd] = useState(false);
   const [listTitle, setListTitle] = useState("");
+  const [cardTitle, setCardTitle] = useState("");
   const [addCardMode, setAddCardMode] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [addCardTitleMode, setAddCardTitleMode] = useState(false);
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
+  const [openEditModal, setOpenEditModal] = React.useState(false);
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
+  };
+  const handleCloseEditModal = () => setOpenEditModal(false);
+
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -38,8 +46,16 @@ function NewList() {
   };
 
   const handleAddTitle = () => {
-    setAddCardMode(true)
-  }
+    listTitle && setAddCardMode(true);
+  };
+  const handleEditCardTitle = () => {
+    setAddCardTitleMode(true);
+  };
+  const handleDeleteCardTitle = () => {
+    setCardTitle("");
+    setAddCardTitleMode(false);
+  };
+
   return (
     <>
       {!isAdd && (
@@ -48,8 +64,9 @@ function NewList() {
             Add a list
           </Button>
         </Card>
-      ) }{
-        isAdd && !addCardMode && (
+      )}
+
+      {isAdd && !addCardMode && (
         <Card sx={{ maxWidth: 345, m: 5, p: 2, borderRadius: 3 }}>
           <Box>
             <TextField
@@ -61,11 +78,11 @@ function NewList() {
               value={listTitle}
               onChange={(e) => setListTitle(e.target.value)}
             />
-            <CloseIcon sx={{mt:3}} />
+            <CloseIcon sx={{ mt: 3 }} onClick={(e) => setListTitle("")} />
 
             <Button
               variant="contained"
-              sx={{ borderRadius: "50%", m: 2, bgcolor: "text.secondary" }}
+              sx={{ borderRadius: "18px", m: 2, bgcolor: "text.secondary" }}
               onClick={handleAddTitle}
             >
               Add
@@ -73,9 +90,10 @@ function NewList() {
           </Box>
         </Card>
       )}
-      {
-        addCardMode && (
-          <Card sx={{ maxWidth: 345, m: 5, borderRadius: 3, borderColor: 'grey.500' }}>
+      {addCardMode && (
+        <Card
+          sx={{ maxWidth: 345, m: 5, borderRadius: 3, borderColor: "grey.500" }}
+        >
           <CardHeader
             action={
               <Box>
@@ -104,8 +122,12 @@ function NewList() {
                       Remove List
                     </IconButton>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <IconButton size="small" disableRipple>
+                  <MenuItem>
+                    <IconButton
+                      size="small"
+                      onClick={handleOpenEditModal}
+                      disableRipple
+                    >
                       <DriveFileRenameOutlineIcon />
                       Rename List
                     </IconButton>
@@ -113,7 +135,24 @@ function NewList() {
                 </Menu>
               </Box>
             }
-            title={listTitle}
+            title={
+              openEditModal ? (
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <TextField
+                    id="list-title"
+                    value={listTitle}
+                    onChange={(e) => setListTitle(e.target.value)}
+                    required
+                    label="List title"
+                    variant="standard"
+                    sx={{ m: 0.5}}
+                  ></TextField>
+                  <CheckIcon  />
+                </Box>
+              ) : (
+                listTitle
+              )
+            }
           />
           <Button onClick={handleOpen}>
             <CardContent>
@@ -121,16 +160,47 @@ function NewList() {
             </CardContent>
           </Button>
           <Divider />
-
-          <CardActions disableSpacing>
-            <IconButton aria-label="add a new board">
-              <AddIcon />
-            </IconButton>
-            <Typography color="text.secondary">add a new board</Typography>
-          </CardActions>
+          {addCardTitleMode && (
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <TextField
+                id="card-title"
+                value={cardTitle}
+                onChange={(e) => setCardTitle(e.target.value)}
+                required
+                label="Card title"
+                variant="standard"
+                sx={{ m: 3 }}
+              />
+              <CloseIcon onClick={handleDeleteCardTitle} sx={{ mb: 3.5 }} />
+            </Box>
+          )}
+          {cardTitle !== "" && addCardTitleMode && (
+            <Button
+              variant="contained"
+              sx={{
+                borderRadius: "8px",
+                ml: 2,
+                mb: 2,
+                bgcolor: "text.secondary",
+              }}
+            >
+              Add
+            </Button>
+          )}
+          {!addCardTitleMode && (
+            <CardActions disableSpacing>
+              <IconButton
+                aria-label="add a card"
+                disableRipple
+                onClick={handleEditCardTitle}
+              >
+                <AddIcon />
+                <Typography color="text.secondary">add a card</Typography>
+              </IconButton>
+            </CardActions>
+          )}
         </Card>
-        )
-      }
+      )}
     </>
   );
 }
