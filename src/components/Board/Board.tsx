@@ -1,6 +1,6 @@
 import React from 'react'
 import BoardArea from './BoardArea'
-import Header from './Header'
+import Header from '../Home/Header'
 
 function Board() {
   return (

@@ -8,7 +8,7 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupIcon from "@mui/icons-material/Group";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import BoardCard from "./BoardCard";
+import BoardCard from "../Board/BoardCard";
 import Grid from "@mui/material/Grid";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
