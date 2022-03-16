@@ -1,8 +1,8 @@
 import * as React from "react";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import IconButton from "@mui/material/IconButton";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -24,19 +24,16 @@ import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Tooltip from "@mui/material/Tooltip";
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import ListChip from "./ListChip";
+import CheckList from "./CheckList";
+import CheckListProgress from "./CheckListProgress";
+import DateTime from "./DateTime";
+import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
-import ListChip from "./ListChip";
-
-interface ChipData {
-  key: number;
-  label: string;
-}
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -89,16 +86,6 @@ function CustomButton(props: ButtonUnstyledProps) {
   return <ButtonUnstyled {...props} component={CustomButtonRoot} />;
 }
 
-const dateStyle = {
-  position: "absolute" as "absolute",
-  top: "28%",
-  left: "29%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-};
-
 const labelStyle = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -126,16 +113,6 @@ const inputStyle = {
 };
 
 export default function ListModal({ handleClose }: Props) {
-  const [value, setValue] = React.useState<Date | null>(new Date());
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
-
-  const [openDate, setOpenDate] = React.useState(false);
-  const handleOpenDate = () => setOpenDate(true);
-  const handleCloseDate = () => setOpenDate(false);
-
   const [openLabel, setOpenLabel] = React.useState(false);
   const handleOpenLabel = () => setOpenLabel(true);
   const handleCloseLabel = () => setOpenLabel(false);
@@ -158,6 +135,14 @@ export default function ListModal({ handleClose }: Props) {
 
     setChecked(newChecked);
   };
+  const [openDate, setOpenDate] = React.useState(false);
+  const handleOpenDate = () => setOpenDate(true);
+  const [value, setValue] = React.useState<Date | null>(new Date());
+
+  const handleCloseDate = () => setOpenDate(false);
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
 
   return (
     <Paper style={{ maxHeight: 500, overflowY: "auto" }}>
@@ -171,23 +156,7 @@ export default function ListModal({ handleClose }: Props) {
               >
                 <TodayOutlinedIcon sx={{ fontSize: 30 }} />
               </IconButton>
-              <Modal
-                open={openDate}
-                onClose={handleCloseDate}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={dateStyle}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      label="Date Time picker"
-                      value={value}
-                      onChange={handleChange}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                </Box>
-              </Modal>
+              <DateTime openDate={openDate} setOpenDate={setOpenDate} />
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -276,7 +245,7 @@ export default function ListModal({ handleClose }: Props) {
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Close list">
-                <IconButton sx={{ p: 0 }} onClick={handleClose} >
+                <IconButton sx={{ p: 0 }} onClick={handleClose}>
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
@@ -286,26 +255,38 @@ export default function ListModal({ handleClose }: Props) {
       </AppBar>
 
       <CardHeader
-        // action={
-        //   <IconButton aria-label="settings" onClick={handleClose}>
-        //     <CloseIcon />
-        //   </IconButton>
-        // }
         subheader={
-          <div role="presentation" onClick={handleClick}>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/">
-                Untitled Board
-              </Link>
-              <Link
-                underline="hover"
-                color="inherit"
-                href="/getting-started/installation/"
-              >
-                title
-              </Link>
-            </Breadcrumbs>
-          </div>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <div role="presentation" onClick={handleClick}>
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/">
+                   Board Name
+                </Link>
+                <Link
+                  underline="hover"
+                  color="inherit"
+                  href="/getting-started/installation/"
+                >
+                  List name
+                </Link>
+              </Breadcrumbs>
+            </div>
+            <Box>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Box>
         }
       />
       <Box>
@@ -347,6 +328,7 @@ export default function ListModal({ handleClose }: Props) {
             sx={{
               display: "flex",
               flexDirection: "row",
+              marginTop: 3,
             }}
           >
             <CommentOutlinedIcon />
@@ -374,15 +356,26 @@ export default function ListModal({ handleClose }: Props) {
             />
           </Box>
           <CustomButton>Add</CustomButton>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: 4,
+            }}
+          >
+            <CheckBoxOutlinedIcon />
+            <Typography
+              sx={{ ml: 1, mb: 3 }}
+              variant="subtitle1"
+              gutterBottom
+              component="div"
+            >
+              CheckList
+            </Typography>
+          </Box>
+          <CheckListProgress />
+          <CheckList />
         </CardContent>
-        {/* <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        </CardActions> */}
       </Box>
     </Paper>
   );

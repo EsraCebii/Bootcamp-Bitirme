@@ -3,21 +3,19 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
+import SettingsIcon from '@mui/icons-material/Settings';
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckIcon from "@mui/icons-material/Check";
-import { TextField } from "@mui/material";
+import { Menu, MenuItem, TextField, Typography } from "@mui/material";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,6 +39,10 @@ const Header = () => {
     null
   );
 
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -48,10 +50,6 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -59,14 +57,18 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Link to="/boards">
               <Button sx={{ color: "white", display: "block" }}>
-                <AssessmentIcon />
-                Boards
+                <Box sx={{ display: "flex",
+              flexDirection: "row", gap:1}}>
+                <AssessmentIcon  />
+                <Typography >Boards</Typography>
+                </Box>
+                
               </Button>
             </Link>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button onClick={handleOpen}>
-              <VisibilityIcon />
+              <VisibilityIcon sx={{mr:1}}  />
               Untitled Board
             </Button>
             <Modal
@@ -94,34 +96,37 @@ const Header = () => {
               </Fade>
             </Modal>
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
+                <SettingsIcon />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: '45px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+             
+                <MenuItem  onClick={handleCloseUserMenu}>
+                <Box sx={{ display: "flex",
+              flexDirection: "row", gap:1}}>
+                <DeleteOutlineIcon  />
+                <Typography>Delete Board</Typography>
+                </Box>
                 </MenuItem>
-              ))}
+         
             </Menu>
           </Box>
         </Toolbar>
