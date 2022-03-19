@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Container from "@mui/material/Container";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import { Link } from "react-router-dom";
@@ -14,8 +14,11 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckIcon from "@mui/icons-material/Check";
-import { Menu, MenuItem, TextField, Typography } from "@mui/material";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Divider, Menu, MenuItem, TextField, Typography } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,16 +32,12 @@ const style = {
   p: 1,
 };
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
+  const { data } = useSelector((state: AppState) => state.user);
+  console.log(data);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -57,18 +56,16 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Link to="/boards">
               <Button sx={{ color: "white", display: "block" }}>
-                <Box sx={{ display: "flex",
-              flexDirection: "row", gap:1}}>
-                <AssessmentIcon  />
-                <Typography >Boards</Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                  <AssessmentIcon />
+                  <Typography>Boards</Typography>
                 </Box>
-                
               </Button>
             </Link>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button onClick={handleOpen}>
-              <VisibilityIcon sx={{mr:1}}  />
+              <VisibilityIcon sx={{ mr: 1 }} />
               Untitled Board
             </Button>
             <Modal
@@ -103,30 +100,35 @@ const Header = () => {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-             
-                <MenuItem  onClick={handleCloseUserMenu}>
-                <Box sx={{ display: "flex",
-              flexDirection: "row", gap:1}}>
-                <DeleteOutlineIcon  />
-                <Typography>Delete Board</Typography>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                  <AccountBoxOutlinedIcon />
+                  <Typography>{data.username}</Typography>
                 </Box>
-                </MenuItem>
-         
+              </MenuItem>
+              <Divider />
+
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                  <DeleteOutlineIcon />
+                  <Typography>Delete Board</Typography>
+                </Box>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

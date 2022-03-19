@@ -74,67 +74,11 @@ function BoardApp() {
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
           <Card sx={{ maxWidth: 345, m: 5 }}>
-            <Box>
-              <IconButton
-                aria-label="share"
-                sx={{ m: 2 }}
-                onClick={handleOpenNavMenu}
-              >
-                <GroupAddIcon />
-              </IconButton>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-              >
-                <List>
-                  {[0, 1, 2, 3].map((value) => {
-                    const labelId = `checkbox-list-label-${value}`;
+          
 
-                    return (
-                      <MenuItem>
-                        <ListItem key={value} disablePadding>
-                          <ListItemButton
-                            role={undefined}
-                            onClick={handleToggle(value)}
-                            dense
-                          >
-                            <ListItemIcon>
-                              <Checkbox
-                                edge="start"
-                                checked={checked.indexOf(value) !== -1}
-                                tabIndex={-1}
-                                disableRipple
-                                inputProps={{ "aria-labelledby": labelId }}
-                              />
-                            </ListItemIcon>
-                            <ListItemText
-                              id={labelId}
-                              primary={`esra ${value + 1}`}
-                            />
-                          </ListItemButton>
-                        </ListItem>
-                      </MenuItem>
-                    );
-                  })}
-                </List>
-              </Menu>
-            </Box>
-
-            <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ textAlign: "center" , mt:9}}>
               <Link to="/addBoard">
-                <Icon sx={{ fontSize: 50 }}>add_circle</Icon>{" "}
+                <Icon sx={{ fontSize: 50 }}>add_circle</Icon>
               </Link>
             </Box>
 
@@ -144,7 +88,7 @@ function BoardApp() {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
+              <IconButton aria-label="members">
                 <GroupIcon />
               </IconButton>
             </CardActions>

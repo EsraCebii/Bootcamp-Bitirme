@@ -32,7 +32,7 @@ export default function ListContent() {
 
   return (
     <>
-      <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left" }}>
+      <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left", m:1 }}>
         <CardContent>
           <Box
             sx={{

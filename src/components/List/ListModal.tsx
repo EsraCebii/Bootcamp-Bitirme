@@ -45,6 +45,7 @@ const grey = {
   600: "#757575",
   800: "#424242",
 };
+
 const CustomButtonRoot = styled("span")`
   font-family: IBM Plex Sans, sans-serif;
   font-weight: bold;
