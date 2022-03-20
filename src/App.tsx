@@ -7,6 +7,9 @@ import Paper from "@mui/material/Paper";
 import Board from "./components/Board/Board";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import NewBoard from "./components/Board/NewBoard"
+import BoardArea from "./components/Board/BoardArea";
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -26,7 +29,8 @@ function App() {
         <Route path="/" element={<Register /> } />
         <Route path="/login" element={<Login /> } />
         <Route path="/boards" element={<BoardApp />} />
-        <Route path="/addBoard" element={<Board />} />
+         <Route path="board/:id"  element={<Board />} />
+        <Route path="/newBoard" element={<NewBoard />} />
       </Routes>
       </ThemeProvider>
     </>

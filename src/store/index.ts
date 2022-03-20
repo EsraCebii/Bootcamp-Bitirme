@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
+import { BoardState } from "../types/boards";
 import { UserState } from "../types/user";
+import boardReducer from "./reducers/boardReducer";
 import userReducer from "./reducers/userReducer";
 
 export interface AppState {
     user: UserState;
-    // boards: any;
+    boards: BoardState;
     // lists: any;
     // cards :any;
     // checkLists: any;
@@ -12,7 +14,7 @@ export interface AppState {
 
 const rootReducer = combineReducers<AppState>({
     user: userReducer,
-    // boards: () =>{},
+    boards: boardReducer,
     // lists: () => {},
     // cards: () => {},
     // checkLists: () => {}

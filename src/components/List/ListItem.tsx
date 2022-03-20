@@ -1,7 +1,7 @@
-import * as React from "react";
+
 import { Button, formLabelClasses, Paper, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useState,  FunctionComponent, useEffect, } from "react";
 import { Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
 import Card from "@mui/material/Card";
@@ -18,13 +18,19 @@ import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import { List } from "../../types/lists";
+interface IListItemProps {
+  list: List;
+}
 
-function ListItem() {
+const ListItem: FunctionComponent<IListItemProps> = (props) => {
+  const { list } = props;
+  
   const [listTitle, setListTitle] = useState("");
   const [cardTitle, setCardTitle] = useState("");
   const [addCardTitleMode, setAddCardTitleMode] = useState(false);
 
-  const [openEditModal, setOpenEditModal] = React.useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const handleOpenEditModal = () => {
     setOpenEditModal(true);
   };

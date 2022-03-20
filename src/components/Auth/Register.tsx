@@ -7,9 +7,6 @@ import { register } from "../../store/actions/UserActions";
 import { AppState } from "../../store";
 import Typography from '@mui/material/Typography';
 
-// interface RegisterProps {
-//   onRegister?: (user: User) => void
-// }
 
 const Register = () => {
   const navigate = useNavigate()

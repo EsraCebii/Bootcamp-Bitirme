@@ -9,9 +9,6 @@ import { login } from "../../store/actions/UserActions";
 import Typography from '@mui/material/Typography';
 
 
-interface LoginProps {
-  onLogin?: (user: User) => void;
-}
 
 const Login = () => {
   const navigate = useNavigate()

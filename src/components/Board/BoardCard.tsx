@@ -1,5 +1,5 @@
 import { Box, Icon } from "@mui/material";
-import * as React from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -16,11 +16,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
+import { Board } from "../../types/boards";
 
 const users = ["Esra", "hakan"];
 
-function BoardCard() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+interface IBoardCardProps {
+  board: Board;
+}
+
+const BoardCard: FunctionComponent<IBoardCardProps> = (props) => {
+  const { board } = props;
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
 
@@ -31,7 +38,7 @@ function BoardCard() {
     setAnchorElNav(null);
   };
 
-  const [checked, setChecked] = React.useState([0]);
+  const [checked, setChecked] = useState([0]);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -106,17 +113,20 @@ function BoardCard() {
             </List>
           </Menu>
         </Box>
+        <Link to={`/board/${board.id}`}>
         <Box sx={{ textAlign: "center" }}>
           <AssessmentIcon sx={{ fontSize: 50 }} />
         </Box>
         <CardContent>
           <Typography variant="h6" sx={{ textAlign: "center" }}>
-            Board Name
+            {board.title}
           </Typography>
         </CardContent>
+        </Link>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
+          <IconButton aria-label="members">
             <GroupIcon />
+
           </IconButton>
         </CardActions>
       </Card>

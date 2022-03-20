@@ -2,51 +2,26 @@ import { Box, Icon } from "@mui/material";
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupIcon from "@mui/icons-material/Group";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import BoardCard from "../Board/BoardCard";
 import Grid from "@mui/material/Grid";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
 import { Link } from "react-router-dom";
-
-const users = ["Esra", "hakan"];
+import { useDispatch, useSelector } from "react-redux";
+import { addBoard, getBoards } from "../../store/actions/BoardActions";
+import { AppState } from "../../store";
+import Loading from "../../utils/Loading";
 
 function BoardApp() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const dispatch = useDispatch();
+  const data = useSelector((state: AppState) => state.boards.data);
+  const loading = useSelector((state: AppState) => state.boards.loading);
+  const handleCreateBoard = () => {
+    dispatch(addBoard({ title: "Untitled Board" }));
   };
 
-  const [checked, setChecked] = React.useState([0]);
-
-  const handleToggle = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
+  React.useEffect(() => {
+    dispatch(getBoards());
+  }, []);
 
   return (
     <>
@@ -58,7 +33,7 @@ function BoardApp() {
             textAlign: "center",
             color: "warning.main",
             fontWeight: "bold",
-            borderRadius: 1
+            borderRadius: 1,
           }}
         >
           Scrumboard App
@@ -69,29 +44,31 @@ function BoardApp() {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Grid item xs={2} sm={4} md={4}>
-          <BoardCard />
+        {loading && (
+          <Grid item xs={2} sm={4} md={4}>
+          <Loading />
         </Grid>
-        <Grid item xs={2} sm={4} md={4}>
-          <Card sx={{ maxWidth: 345, m: 5 }}>
-          
 
-            <Box sx={{ textAlign: "center" , mt:9}}>
-              <Link to="/addBoard">
+        )}
+        {data.map((board, i) => (
+          <Grid item xs={2} sm={4} md={4}>
+            <BoardCard key={i} board={board} />
+          </Grid>
+        ))}
+
+        <Grid item xs={2} sm={4} md={4}>
+          <Card sx={{ maxWidth: 345, mt: 5 }} onClick={handleCreateBoard}>
+            <Box sx={{ textAlign: "center", mt: 9 }}>
+              <Link to="/newBoard">
                 <Icon sx={{ fontSize: 50 }}>add_circle</Icon>
               </Link>
             </Box>
 
             <CardContent>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
+              <Typography variant="h6" sx={{ textAlign: "center", mb: 5 }}>
                 Add a new Board
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton aria-label="members">
-                <GroupIcon />
-              </IconButton>
-            </CardActions>
           </Card>
         </Grid>
       </Grid>

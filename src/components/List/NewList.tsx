@@ -18,8 +18,12 @@ import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../store";
 
 function NewList() {
+  const board = useSelector((state: AppState) => state.boards.currentBoard);
+  
   const [isAdd, setIsAdd] = useState(false);
   const [listTitle, setListTitle] = useState("");
   const [cardTitle, setCardTitle] = useState("");

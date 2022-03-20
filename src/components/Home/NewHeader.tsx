@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState }  from "react";
+import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,56 +19,49 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
-import { Board, BoardForm } from "../../types/boards";
-import { deleteBoard, getBoard, updateBoard } from "../../store/actions/BoardActions";
-import {  useNavigate } from "react-router-dom";
+import { addBoard, getBoards } from "../../store/actions/BoardActions";
+import { BoardForm } from "../../types/boards";
 
 const style = {
   position: "absolute" as "absolute",
   top: "10%",
   left: "53%",
   transform: "translate(-50%, -50%)",
-  width: 250,
+  width: 280,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 12,
   p: 1,
 };
 
-const emptyForm: BoardForm = {
-  title: "",
-};
-const Header = () => {
-  const board = useSelector((state: AppState) => state.boards.currentBoard);
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
+const NewHeader = () => {
+    const emptyForm: BoardForm = {
+        title: "Untitle board",
+      };
+      
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const [form, setForm] = useState<BoardForm>(emptyForm);
   const { data } = useSelector((state: AppState) => state.user);
-  const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const [form, setForm] = React.useState<BoardForm>(emptyForm);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+  const[updateId, setUpdateId]= React.useState<number | null>(null);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handleDeleteBoard = () => {
-    dispatch(deleteBoard(Number(board.id)))
-    navigate("/boards");
+  const handleAddBoardTitle = () => {
+    dispatch(addBoard(form));
   }
-  const boardId= board.id
-  const handleEditBoardTitle = () => {
-    dispatch(updateBoard(form, boardId))
-    dispatch(getBoard(boardId));
-    handleClose()
-    setForm(emptyForm)
-  }
-  
+
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -86,9 +79,11 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button onClick={handleOpen}>
               <VisibilityIcon sx={{ mr: 1 }} />
-              {board.title}
+              Untitled Board
             </Button>
             <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
               open={open}
               onClose={handleClose}
               closeAfterTransition
@@ -100,10 +95,13 @@ const Header = () => {
               <Fade in={open}>
                 <Box sx={style}>
                   <TextField
-                    value={form.title} 
-                    onChange={(e) => setForm({ ...form, title: e.target.value })} 
+                    id={form.title}
+                    name="title"
+                    variant="outlined"
+                    value={form.title}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
                   />
-                  <IconButton onClick={handleEditBoardTitle}>
+                  <IconButton  onClick={handleAddBoardTitle}>
                     <CheckIcon />
                   </IconButton>
                 </Box>
@@ -141,7 +139,7 @@ const Header = () => {
               <Divider />
 
               <MenuItem onClick={handleCloseUserMenu}>
-                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }} onClick={handleDeleteBoard}>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
                   <DeleteOutlineIcon />
                   <Typography>Delete Board</Typography>
                 </Box>
@@ -153,4 +151,4 @@ const Header = () => {
     </AppBar>
   );
 };
-export default Header;
+export default NewHeader;
