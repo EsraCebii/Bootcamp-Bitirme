@@ -18,13 +18,18 @@ import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { List } from "../../types/lists";
+import { List } from "../../types/boards";
+import { useDispatch } from "react-redux";
+import { deleteList } from "../../store/actions/BoardActions";
+
 interface IListItemProps {
-  list: List;
+  list: any;
 }
 
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const { list } = props;
+  const dispatch = useDispatch();
+  
   
   const [listTitle, setListTitle] = useState(list.title);
   const [cardTitle, setCardTitle] = useState("");
@@ -52,6 +57,9 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
     setCardTitle("");
     setAddCardTitleMode(false);
   };
+  const handleDeleteList = () => {
+    dispatch(deleteList(Number(list.id)))
+  }
 
   return (
     <>
@@ -81,7 +89,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                 onClose={handleCloseNavMenu}
               >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <IconButton size="small" disableRipple>
+                  <IconButton size="small" disableRipple onClick={handleDeleteList}>
                     <DeleteIcon />
                     Remove List
                   </IconButton>

@@ -17,10 +17,7 @@ const defaultState: BoardState = {
       createdAt: "",
       updatedAt: "",
     },
-    members: [
-
-
-    ],
+    members: [],
   },
 };
 const boardReducer = (
@@ -82,6 +79,22 @@ const boardReducer = (
             loading: false,
             error: "Error deleting board.. ",
           };
+          case "DELETE_LIST_START":
+            return { ...state, loading: true, error: "" };
+          case "DELETE_LIST_SUCCESS":
+            return {
+              ...state,
+              loading: false,
+              data: state.currentBoard.lists.filter(list =>
+                list.id !== action.payload
+              ),
+            };
+          case "DELETE_LIST_ERROR":
+            return {
+              ...state,
+              loading: false,
+              error: "Error deleting list.. ",
+            };
     default:
       return state;
   }

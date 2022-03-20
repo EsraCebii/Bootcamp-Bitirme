@@ -1,4 +1,4 @@
-import { Board, BoardDispatch, BoardForm } from "../../types/boards";
+import { Board, BoardDispatch, BoardForm, List } from "../../types/boards";
 import api from "../../utils/api";
 
 export const getBoards = () => async (dispatch: BoardDispatch) => {
@@ -48,5 +48,15 @@ export const addBoard =
       dispatch({ type: "DELETE_BOARD_SUCCESS", payload: boardId });
     } catch {
       dispatch({ type: "DELETE_BOARD_ERROR" });
+    }
+  };
+  export const deleteList =
+  (id: number) => async (dispatch: BoardDispatch) => {
+    dispatch({ type: "DELETE_LIST_START" });
+    try {
+      await api().delete<any>("/list/"+ id);
+      dispatch({ type: "DELETE_LIST_SUCCESS", payload: id });
+    } catch {
+      dispatch({ type: "DELETE_LIST_ERROR" });
     }
   };

@@ -3,12 +3,21 @@ import Grid from "@mui/material/Grid";
 import NewList from "../List/NewList";
 import ListItem from "../List/ListItem";
 import { AppState } from "../../store";
+import { useEffect } from "react";
+import {  getLists } from "../../store/actions/ListActions";
 
 
 const  BoardArea = () => {
-  const lists = useSelector((state: AppState) => state.boards.currentBoard.lists);
+  const dispatch = useDispatch ()
+//   const boardId = useSelector((state: AppState) => state.boards.currentBoard.id);
+//   console.log(boardId);
   
- 
+//  useEffect(() => {
+//    dispatch(getLists(Number(boardId)))
+//  }, [])
+//  const lists =  useSelector((state: AppState) => state.lists.data);
+const lists = useSelector((state: AppState) => state.boards.currentBoard.lists);
+ console.log(lists);
   return (
     <Grid
       container

@@ -4,7 +4,7 @@ export interface ListState {
   data: List[];
   loading: boolean;
   error: string;
-  currentList: List;
+  // currentList: List;
 }
 export interface List {
   id: number;
