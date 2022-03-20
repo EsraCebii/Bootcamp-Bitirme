@@ -7,7 +7,6 @@ import { AppState } from "../../store";
 
 const  BoardArea = () => {
   const lists = useSelector((state: AppState) => state.boards.currentBoard.lists);
-  console.log(lists);
   
  
   return (

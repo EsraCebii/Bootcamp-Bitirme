@@ -8,7 +8,6 @@ import Board from "./components/Board/Board";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import NewBoard from "./components/Board/NewBoard"
-import BoardArea from "./components/Board/BoardArea";
 
 
 const Item = styled(Paper)(({ theme }) => ({

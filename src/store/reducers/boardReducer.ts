@@ -17,7 +17,10 @@ const defaultState: BoardState = {
       createdAt: "",
       updatedAt: "",
     },
-    members: [],
+    members: [
+
+
+    ],
   },
 };
 const boardReducer = (

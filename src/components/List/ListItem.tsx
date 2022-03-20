@@ -26,7 +26,7 @@ interface IListItemProps {
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const { list } = props;
   
-  const [listTitle, setListTitle] = useState("");
+  const [listTitle, setListTitle] = useState(list.title);
   const [cardTitle, setCardTitle] = useState("");
   const [addCardTitleMode, setAddCardTitleMode] = useState(false);
 
@@ -114,7 +114,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                 <CheckIcon />
               </Box>
             ) : (
-              listTitle
+              list.title
             )
           }
         />

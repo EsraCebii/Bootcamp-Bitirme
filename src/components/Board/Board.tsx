@@ -1,5 +1,4 @@
 import React,{useEffect} from 'react'
-import BoardArea from './BoardArea'
 import Header from '../Home/Header'
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -16,7 +15,6 @@ function Board() {
   return (
     <>
     <Header  />
-    <BoardArea  />
     </>
   )
 }

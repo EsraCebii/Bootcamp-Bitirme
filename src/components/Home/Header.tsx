@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState }  from "react";
+import React, { useEffect, useState }  from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,6 +22,10 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { Board, BoardForm } from "../../types/boards";
 import { deleteBoard, getBoard, updateBoard } from "../../store/actions/BoardActions";
 import {  useNavigate } from "react-router-dom";
+import GroupIcon from "@mui/icons-material/Group";
+import MemberList from "../Members/MemberList";
+import BoardArea from "../Board/BoardArea";
+
 
 const style = {
   position: "absolute" as "absolute",
@@ -38,14 +42,18 @@ const style = {
 const emptyForm: BoardForm = {
   title: "",
 };
+
 const Header = () => {
   const board = useSelector((state: AppState) => state.boards.currentBoard);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
+  const [member, setMember] = useState(false)
+  
   const [form, setForm] = useState<BoardForm>(emptyForm);
+
   const { data } = useSelector((state: AppState) => state.user);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -62,14 +70,17 @@ const Header = () => {
     navigate("/boards");
   }
   const boardId= board.id
+  const ownerId = board.ownerId
   const handleEditBoardTitle = () => {
     dispatch(updateBoard(form, boardId))
     dispatch(getBoard(boardId));
     handleClose()
     setForm(emptyForm)
   }
+ 
   
   return (
+    <React.Fragment>
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -138,6 +149,7 @@ const Header = () => {
                   <Typography>{data.username}</Typography>
                 </Box>
               </MenuItem>
+             
               <Divider />
 
               <MenuItem onClick={handleCloseUserMenu}>
@@ -146,11 +158,34 @@ const Header = () => {
                   <Typography>Delete Board</Typography>
                 </Box>
               </MenuItem>
+            {
+              ownerId && (
+                <MenuItem >
+              
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }} onClick={()=> setMember(true)}>
+                  <GroupIcon />
+                  <Typography>Members</Typography>
+                </Box>
+            
+              </MenuItem>
+              )
+            }
             </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
+    {
+      member && (
+        <MemberList />
+      )
+    }
+    {
+      !member && (
+        <BoardArea  />
+      )
+    }
+    </React.Fragment>
   );
 };
 export default Header;
