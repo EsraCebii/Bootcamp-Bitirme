@@ -63,6 +63,22 @@ const boardReducer = (
           loading: false,
           error: "Error updating board.. ",
         };
+        case "UPDATE_LIST_START":
+          return { ...state, loading: true, error: "" };
+        case "UPDATE_LIST_SUCCESS":
+          return {
+            ...state,
+            loading: false,
+            data: state.currentBoard.lists.map((list) =>
+            list.id === action.payload.id ? action.payload : list
+            ),
+          };
+        case "UPDATE_LIST_ERROR":
+          return {
+            ...state,
+            loading: false,
+            error: "Error updating list.. ",
+          };
         case "DELETE_BOARD_START":
           return { ...state, loading: true, error: "" };
         case "DELETE_BOARD_SUCCESS":

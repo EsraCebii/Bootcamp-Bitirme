@@ -12,7 +12,7 @@ export interface Board {
   createdAt: any;
   updatedAt: any;
   ownerId: number;
-  lists: List[];
+  lists: any[];
   owner: Owner;
   members: Member[];
 }
@@ -25,6 +25,10 @@ export interface List {
   updatedAt: Date;
   boardId: number;
   cards: any[];
+}
+export interface ListForm {
+  title: string;
+  boardId: number
 }
 export interface Member {
   id: number;
@@ -92,6 +96,17 @@ interface UPDATE_SUCCESS {
   type: "UPDATE_BOARD_SUCCESS";
   payload: Board;
 }
+interface UPDATE_LIST_ERROR {
+  type: "UPDATE_LIST_ERROR";
+}
+interface UPDATE_LIST_START {
+  type: "UPDATE_LIST_START";
+}
+
+interface UPDATE_LIST_SUCCESS {
+  type: "UPDATE_LIST_SUCCESS";
+  payload: List;
+}
 interface DELETE_ERROR {
   type: "DELETE_BOARD_ERROR";
 }
@@ -128,6 +143,9 @@ export type BoardAction =
   | UPDATE_START
   | UPDATE_SUCCESS
   | UPDATE_ERROR
+  | UPDATE_LIST_START
+  | UPDATE_LIST_SUCCESS
+  | UPDATE_LIST_ERROR
   | DELETE_START
   | DELETE_SUCCESS
   | DELETE_ERROR

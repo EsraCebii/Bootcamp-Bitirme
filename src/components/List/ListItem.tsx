@@ -18,26 +18,36 @@ import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { List } from "../../types/boards";
+import { List, ListForm } from "../../types/boards";
 import { useDispatch } from "react-redux";
-import { deleteList } from "../../store/actions/BoardActions";
+import { deleteList, getBoard, updateList } from "../../store/actions/BoardActions";
+import { useParams } from "react-router-dom";
+
 
 interface IListItemProps {
   list: any;
 }
 
+
+
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const { list } = props;
   const dispatch = useDispatch();
-  
-  
-  const [listTitle, setListTitle] = useState(list.title);
+  const {id} = useParams()
+  const emptyForm: ListForm = {
+    title: list.title,
+    boardId: Number(id)
+  };
+  const [form, setForm] = useState<ListForm>(emptyForm);
   const [cardTitle, setCardTitle] = useState("");
   const [addCardTitleMode, setAddCardTitleMode] = useState(false);
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const handleOpenEditModal = () => {
     setOpenEditModal(true);
+  };
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
   };
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -59,6 +69,12 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
   };
   const handleDeleteList = () => {
     dispatch(deleteList(Number(list.id)))
+    dispatch(getBoard(Number(id)))
+  }
+  const handleEditListTitle = () => {
+    dispatch(updateList(form, Number(list.id)))
+    dispatch(getBoard(Number(id)))
+    handleCloseEditModal()
   }
 
   return (
@@ -100,9 +116,10 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                     onClick={handleOpenEditModal}
                     disableRipple
                   >
-                    <DriveFileRenameOutlineIcon />
+                    <IconButton onClick={handleEditListTitle}>
+                    <DriveFileRenameOutlineIcon  />
                     Rename List
-                  </IconButton>
+                  </IconButton></IconButton>
                 </MenuItem>
               </Menu>
             </Box>
@@ -112,8 +129,8 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <TextField
                   id="list-title"
-                  value={listTitle}
-                  onChange={(e) => setListTitle(e.target.value)}
+                  value={form.title} 
+                  onChange={(e) => setForm({ ...form, title: e.target.value })} 
                   required
                   label="List title"
                   variant="standard"

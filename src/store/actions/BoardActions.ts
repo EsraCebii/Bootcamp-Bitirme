@@ -1,4 +1,4 @@
-import { Board, BoardDispatch, BoardForm, List } from "../../types/boards";
+import { Board, BoardDispatch, BoardForm, List, ListForm } from "../../types/boards";
 import api from "../../utils/api";
 
 export const getBoards = () => async (dispatch: BoardDispatch) => {
@@ -35,6 +35,16 @@ export const addBoard =
     dispatch({ type: "UPDATE_BOARD_START" });
     try {
       const response = await api().put<Board>("/board/"+ boardId,  form);
+      dispatch({ type: "UPDATE_BOARD_SUCCESS", payload: response.data });
+    } catch {
+      dispatch({ type: "UPDATE_BOARD_ERROR" });
+    }
+  };
+  export const updateList =
+  (form: Partial<ListForm>, listId: number) => async (dispatch: BoardDispatch) => {
+    dispatch({ type: "UPDATE_BOARD_START" });
+    try {
+      const response = await api().put<Board>("/list/"+ listId,  form);
       dispatch({ type: "UPDATE_BOARD_SUCCESS", payload: response.data });
     } catch {
       dispatch({ type: "UPDATE_BOARD_ERROR" });
