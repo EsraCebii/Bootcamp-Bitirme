@@ -20,9 +20,13 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
+import { ListForm } from "../../types/boards";
+import { addList, getBoard } from "../../store/actions/BoardActions";
 
 function NewList() {
   const board = useSelector((state: AppState) => state.boards.currentBoard);
+  const boardId = useSelector((state: AppState) => state.boards.currentBoard.id);
+  console.log(boardId);
   
   const [isAdd, setIsAdd] = useState(false);
   const [listTitle, setListTitle] = useState("");
@@ -32,6 +36,12 @@ function NewList() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [addCardTitleMode, setAddCardTitleMode] = useState(false);
+  const dispatch = useDispatch();
+  const defaultForm: ListForm = {
+    title: "",
+    boardId: 0,
+  };
+  const [form, setForm] = useState<ListForm>(defaultForm);
 
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const handleOpenEditModal = () => {
@@ -49,8 +59,10 @@ function NewList() {
     setAnchorElNav(null);
   };
 
-  const handleAddTitle = () => {
+  const handleAddListTitle = () => {
     listTitle && setAddCardMode(true);
+    dispatch(addList(form))
+    dispatch(getBoard(Number(boardId)))
   };
   const handleEditCardTitle = () => {
     setAddCardTitleMode(true);
@@ -79,15 +91,15 @@ function NewList() {
               label="List Title"
               variant="standard"
               sx={{ m: 1 }}
-              value={listTitle}
-              onChange={(e) => setListTitle(e.target.value)}
+              value={form.title}
+              onChange={(e) => setForm({ boardId: Number(boardId), title: e.target.value })}
             />
-            <CloseIcon sx={{ mt: 3 }} onClick={(e) => setListTitle("")} />
+            <CloseIcon sx={{ mt: 3 }} onClick={(e) => setForm({ ...form, title: "" })} />
 
             <Button
               variant="contained"
               sx={{ borderRadius: "18px", m: 2, bgcolor: "text.secondary" }}
-              onClick={handleAddTitle}
+              onClick={handleAddListTitle}
             >
               Add
             </Button>

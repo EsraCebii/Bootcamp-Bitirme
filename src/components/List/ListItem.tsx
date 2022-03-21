@@ -74,7 +74,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const handleEditListTitle = () => {
     dispatch(updateList(form, Number(list.id)))
     dispatch(getBoard(Number(id)))
-    handleCloseEditModal()
+    handleCloseEditModal() 
   }
 
   return (
@@ -107,7 +107,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                 <MenuItem onClick={handleCloseNavMenu}>
                   <IconButton size="small" disableRipple onClick={handleDeleteList}>
                     <DeleteIcon />
-                    Remove List
+                    Delete List
                   </IconButton>
                 </MenuItem>
                 <MenuItem>
@@ -115,11 +115,11 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                     size="small"
                     onClick={handleOpenEditModal}
                     disableRipple
+                  
                   >
-                    <IconButton onClick={handleEditListTitle}>
                     <DriveFileRenameOutlineIcon  />
                     Rename List
-                  </IconButton></IconButton>
+                  </IconButton>
                 </MenuItem>
               </Menu>
             </Box>
@@ -136,7 +136,8 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                   variant="standard"
                   sx={{ m: 0.5 }}
                 ></TextField>
-                <CheckIcon />
+                <IconButton  onClick={handleEditListTitle}>
+                <CheckIcon /></IconButton>
               </Box>
             ) : (
               list.title

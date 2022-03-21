@@ -61,15 +61,6 @@ const dispatch = useDispatch();
           `${data.username} successfully logged in!`
         </Alert>
       )}
-      {
-        data.username && (
-          <Alert  sx={{ marginBottom: 2 }}
-          severity="success">
-You have successfully logged in!
-          </Alert>
-
-        )
-      }
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="username"

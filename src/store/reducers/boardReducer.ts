@@ -45,8 +45,18 @@ const boardReducer = (
         loading: false,
         data: [action.payload, ...state.data],
       };
-    case "ADD_BOARD_ERROR":
-      return { ...state, loading: false, error: "Error adding boards.. " };
+    case "ADD_LIST_ERROR":
+      return { ...state, loading: false, error: "Error adding list.. " };
+      case "ADD_LIST_START":
+        return { ...state, loading: true, error: "" };
+      case "ADD_LIST_SUCCESS":
+        return {
+          ...state,
+          loading: false,
+          currentBoard: {...state.currentBoard, lists:[action.payload, ...state.currentBoard.lists]},
+        };
+      case "ADD_BOARD_ERROR":
+        return { ...state, loading: false, error: "Error adding boards.. " };
       case "UPDATE_BOARD_START":
         return { ...state, loading: true, error: "" };
       case "UPDATE_BOARD_SUCCESS":

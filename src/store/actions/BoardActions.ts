@@ -30,6 +30,16 @@ export const addBoard =
       dispatch({ type: "ADD_BOARD_ERROR" });
     }
   };
+  export const addList =
+  (form: ListForm) => async (dispatch: BoardDispatch) => {
+    dispatch({ type: "ADD_LIST_START" });
+    try {
+      const response = await api().post<any>("/list", form);
+      dispatch({ type: "ADD_LIST_SUCCESS", payload: response.data });
+    } catch {
+      dispatch({ type: "ADD_LIST_ERROR" });
+    }
+  };
   export const updateBoard =
   (form: Partial<BoardForm>, boardId: number) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "UPDATE_BOARD_START" });

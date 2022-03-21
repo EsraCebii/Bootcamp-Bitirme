@@ -21,14 +21,14 @@ export interface List {
   id: number;
   order?: any;
   title: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: any;
+  updatedAt: any;
   boardId: number;
   cards: any[];
 }
 export interface ListForm {
   title: string;
-  boardId: number
+  boardId: number;
 }
 export interface Member {
   id: number;
@@ -130,6 +130,17 @@ interface DELETE_LIST_SUCCESS {
   type: "DELETE_LIST_SUCCESS";
   payload: number;
 }
+interface ADD_LIST_START {
+  type: "ADD_LIST_START";
+}
+
+interface ADD_LIST_SUCCESS {
+  type: "ADD_LIST_SUCCESS";
+  payload: List;
+}
+interface ADD_LIST_ERROR {
+  type: "ADD_LIST_ERROR";
+}
 export type BoardAction =
   | GET_START
   | GET_SUCCESS
@@ -140,6 +151,9 @@ export type BoardAction =
   | ADD_START
   | ADD_SUCCESS
   | ADD_ERROR
+  | ADD_LIST_START
+  | ADD_LIST_SUCCESS
+  | ADD_LIST_ERROR
   | UPDATE_START
   | UPDATE_SUCCESS
   | UPDATE_ERROR
