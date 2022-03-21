@@ -1,4 +1,4 @@
-import { Board, BoardDispatch, BoardForm, List, ListForm } from "../../types/boards";
+import { Board, BoardDispatch, BoardForm, CardForm, CardItem, List, ListForm } from "../../types/boards";
 import api from "../../utils/api";
 
 export const getBoards = () => async (dispatch: BoardDispatch) => {
@@ -40,6 +40,17 @@ export const addBoard =
       dispatch({ type: "ADD_LIST_ERROR" });
     }
   };
+  export const addCard =
+  (form: CardForm) => async (dispatch: BoardDispatch) => {
+    dispatch({ type: "ADD_CARD_START" });
+    try {
+      const response = await api().post<CardItem>("/card", form);
+      dispatch({ type: "ADD_CARD_SUCCESS", payload: response.data });
+    } catch {
+      dispatch({ type: "ADD_CARD_ERROR" });
+    }
+  };
+ 
   export const updateBoard =
   (form: Partial<BoardForm>, boardId: number) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "UPDATE_BOARD_START" });

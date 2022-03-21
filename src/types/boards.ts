@@ -24,11 +24,28 @@ export interface List {
   createdAt: any;
   updatedAt: any;
   boardId: number;
-  cards: any[];
+  cards: CardItem[];
+}
+export interface CardItem {
+  id: number;
+  title: string;
+  description?: any;
+  order?: any;
+  duedate?: any;
+  createdAt: Date;
+  updatedAt: Date;
+  listId: number;
+  labels: any[];
+  checklists: any[];
+  comments: any[];
 }
 export interface ListForm {
   title: string;
   boardId: number;
+}
+export interface CardForm {
+  title: string;
+  listId: number;
 }
 export interface Member {
   id: number;
@@ -74,6 +91,7 @@ interface GET_BOARD_SUCCES {
 interface GET_BOARD_ERROR {
   type: "GET_BOARD_ERROR";
 }
+
 interface ADD_START {
   type: "ADD_BOARD_START";
 }
@@ -141,6 +159,17 @@ interface ADD_LIST_SUCCESS {
 interface ADD_LIST_ERROR {
   type: "ADD_LIST_ERROR";
 }
+interface ADD_CARD_START {
+  type: "ADD_CARD_START";
+}
+
+interface ADD_CARD_SUCCESS {
+  type: "ADD_CARD_SUCCESS";
+  payload: CardItem;
+}
+interface ADD_CARD_ERROR {
+  type: "ADD_CARD_ERROR";
+}
 export type BoardAction =
   | GET_START
   | GET_SUCCESS
@@ -154,6 +183,9 @@ export type BoardAction =
   | ADD_LIST_START
   | ADD_LIST_SUCCESS
   | ADD_LIST_ERROR
+  | ADD_CARD_START
+  | ADD_CARD_SUCCESS
+  | ADD_CARD_ERROR
   | UPDATE_START
   | UPDATE_SUCCESS
   | UPDATE_ERROR

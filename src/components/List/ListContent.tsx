@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, FunctionComponent, useEffect } from "react";
 import Card from "@mui/material/Card";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
@@ -6,10 +6,11 @@ import Modal from "@mui/material/Modal";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "@mui/material/Divider";
 import ListModal from "./ListModal";
-import { Box, CardContent, Chip } from "@mui/material";
+import { Box, CardContent, Chip, Typography } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
+import { CardItem } from "../../types/boards";
 
 const style = {
   position: "absolute" as "absolute",
@@ -25,14 +26,19 @@ const style = {
   p: 4,
 };
 
-export default function ListContent() {
-  const [open, setOpen] = React.useState(false);
+interface IListContentProps {
+  card: CardItem;
+}
+const ListContent: FunctionComponent<IListContentProps> = (props) => {
+  const { card } = props;
+  console.log(card);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <>
-      <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left", m:1 }}>
+      <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left", m: 1 }}>
         <CardContent>
           <Box
             sx={{
@@ -40,16 +46,25 @@ export default function ListContent() {
               flexDirection: "row",
             }}
           >
-            <Chip
-              color="primary"
-              size="small"
-              sx={{ minWidth: "35px", maxHeight: "8px", mx: 1 }}
-            />
-            <Chip
-              color="success"
-              size="small"
-              sx={{ minWidth: "35px", maxHeight: "8px", mx: 1 }}
-            />
+            {card.labels &&
+              card.labels.length !== 0 &&
+              card.labels.map((card, i) => (
+                <Chip
+                  key={i}
+                  size="small"
+                  sx={{
+                    minWidth: "35px",
+                    maxHeight: "8px",
+                    mx: 1,
+                    backgroundColor: card.color,
+                  }}
+                />
+              ))}
+          </Box>
+          <Box>
+            <Typography variant="overline" display="block" sx={{ mt: 1 }}>
+              {card.title}
+            </Typography>
           </Box>
 
           <Box
@@ -64,7 +79,7 @@ export default function ListContent() {
               avatar={<CheckCircleOutlineRoundedIcon />}
             />
             <Chip
-              label="Mar 3rd 22"
+              label={card.duedate}
               color="error"
               sx={{ m: 1 }}
               avatar={<AccessTimeRoundedIcon />}
@@ -73,32 +88,31 @@ export default function ListContent() {
           <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24, my: 1 }} />
         </CardContent>
         <Divider />
-      
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginY: 1,
-              marginX: 2
-            }}
-          >
-            <IconButton aria-label="open Modal" onClick={handleOpen}>
-              <VisibilityIcon />
-            </IconButton>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginY: 1,
+            marginX: 2,
+          }}
+        >
+          <IconButton aria-label="open Modal" onClick={handleOpen}>
+            <VisibilityIcon />
+          </IconButton>
+          {card.comments.length !== 0 && (
             <IconButton>
               <InsertCommentOutlinedIcon />
             </IconButton>
-          </Box>
-
+          )}
+        </Box>
       </Card>
-      <Modal
-        open={open}
-        onClose={handleClose}
-      >
+      <Modal open={open} onClose={handleClose}>
         <Card sx={style}>
           <ListModal handleClose={handleClose} />
         </Card>
       </Modal>
     </>
   );
-}
+};
+export default ListContent;

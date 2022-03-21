@@ -18,27 +18,35 @@ import ListContent from "../List/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { List, ListForm } from "../../types/boards";
-import { useDispatch } from "react-redux";
+import { CardForm, List, ListForm } from "../../types/boards";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteList, getBoard, updateList } from "../../store/actions/BoardActions";
 import { useParams } from "react-router-dom";
+import { AppState } from "../../store";
+import { addCard } from "../../store/actions/CardActions";
 
 
 interface IListItemProps {
-  list: any;
+  list: List;
 }
-
-
 
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const { list } = props;
+  const cards = list.cards;
+  
+ 
   const dispatch = useDispatch();
   const {id} = useParams()
   const emptyForm: ListForm = {
     title: list.title,
     boardId: Number(id)
   };
+  const defaultForm: CardForm = {
+    title: "",
+    listId: Number(list.id)
+  };
   const [form, setForm] = useState<ListForm>(emptyForm);
+  const [cardForm, setCardForm] = useState<CardForm>(defaultForm);
   const [cardTitle, setCardTitle] = useState("");
   const [addCardTitleMode, setAddCardTitleMode] = useState(false);
 
@@ -63,10 +71,6 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
   const handleEditCardTitle = () => {
     setAddCardTitleMode(true);
   };
-  const handleDeleteCardTitle = () => {
-    setCardTitle("");
-    setAddCardTitleMode(false);
-  };
   const handleDeleteList = () => {
     dispatch(deleteList(Number(list.id)))
     dispatch(getBoard(Number(id)))
@@ -75,6 +79,10 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
     dispatch(updateList(form, Number(list.id)))
     dispatch(getBoard(Number(id)))
     handleCloseEditModal() 
+  }
+  const handleEditCard = () => {
+    dispatch(addCard(cardForm));
+    setOpenEditModal(false);
   }
 
   return (
@@ -140,16 +148,21 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
                 <CheckIcon /></IconButton>
               </Box>
             ) : (
-              list.title
+              <Card>{list.title}</Card>
             )
           }
         />
 
         <CardContent>
           <Paper style={{ maxHeight: 200, overflow: "auto" }}>
-            <ListContent />
-            <ListContent />
-            <ListContent />
+            {
+              cards && cards.length !== 0  ? (
+                cards.map((card,i) =>(
+                  <ListContent card={card}  key={i} />
+                ))
+              )  : <div>no cards</div>
+            }
+           
           </Paper>
         </CardContent>
 
@@ -158,14 +171,14 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
               id="card-title"
-              value={cardTitle}
-              onChange={(e) => setCardTitle(e.target.value)}
+              value={cardForm.title} 
+              onChange={(e) => setCardForm({ ...cardForm, title: e.target.value })} 
               required
               label="Card title"
               variant="standard"
               sx={{ m: 3 }}
             />
-            <CloseIcon onClick={handleDeleteCardTitle} sx={{ mb: 3.5 }} />
+            <CheckIcon onClick={handleEditCard}  sx={{ mb: 3.5 }} />
           </Box>
         )}
         {cardTitle !== "" && addCardTitleMode && (
