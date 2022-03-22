@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, FunctionComponent, useEffect } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
@@ -34,6 +34,7 @@ import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
+import { CardItem, CardUpdateForm } from "../../types/boards";
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -112,17 +113,28 @@ const inputStyle = {
   m: 1,
   borderRadius: 1,
 };
+interface IListModalProps {
+  card: CardItem;
+  setOpen :  React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function ListModal({ handleClose }: Props) {
-  const [openLabel, setOpenLabel] = React.useState(false);
+const ListModal: FunctionComponent<IListModalProps> = (props) => {
+  const { card , setOpen} = props;
+  const emptyForm: CardUpdateForm = {
+    title: "",
+    listId: 0,
+  };
+  const [form, setForm] = useState<CardUpdateForm>(emptyForm);
+  
+  const [openLabel, setOpenLabel] = useState(false);
   const handleOpenLabel = () => setOpenLabel(true);
   const handleCloseLabel = () => setOpenLabel(false);
 
-  const [openInput, setOpenInput] = React.useState(false);
+  const [openInput, setOpenInput] = useState(false);
   const handleOpenInput = () => setOpenInput(true);
   const handleCloseInput = () => setOpenInput(false);
 
-  const [checked, setChecked] = React.useState([0]);
+  const [checked, setChecked] = useState([0]);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -136,14 +148,15 @@ export default function ListModal({ handleClose }: Props) {
 
     setChecked(newChecked);
   };
-  const [openDate, setOpenDate] = React.useState(false);
+  const [openDate, setOpenDate] = useState(false);
   const handleOpenDate = () => setOpenDate(true);
-  const [value, setValue] = React.useState<Date | null>(new Date());
+  const [value, setValue] = useState<Date | null>(new Date());
 
   const handleCloseDate = () => setOpenDate(false);
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
   };
+  console.log(value, "date")
 
   return (
     <Paper style={{ maxHeight: 500, overflowY: "auto" }}>
@@ -170,7 +183,7 @@ export default function ListModal({ handleClose }: Props) {
               <Modal
                 open={openLabel}
                 onClose={handleCloseLabel}
-                aria-labelledby="modal-modal-title"
+                aria-labelledby="card-detail"
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={labelStyle}>
@@ -246,7 +259,7 @@ export default function ListModal({ handleClose }: Props) {
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Close list">
-                <IconButton sx={{ p: 0 }} onClick={handleClose}>
+                <IconButton sx={{ p: 0 }} onClick={() => setOpen(false)}>
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
@@ -381,3 +394,4 @@ export default function ListModal({ handleClose }: Props) {
     </Paper>
   );
 }
+export default ListModal;

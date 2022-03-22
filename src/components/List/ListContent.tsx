@@ -109,7 +109,7 @@ const ListContent: FunctionComponent<IListContentProps> = (props) => {
       </Card>
       <Modal open={open} onClose={handleClose}>
         <Card sx={style}>
-          <ListModal handleClose={handleClose} />
+          <ListModal setOpen={setOpen} card={card} />
         </Card>
       </Modal>
     </>

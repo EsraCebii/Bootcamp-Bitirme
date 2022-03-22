@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteList, getBoard, updateList } from "../../store/actions/BoardActions";
 import { useParams } from "react-router-dom";
 import { AppState } from "../../store";
-import { addCard } from "../../store/actions/CardActions";
+import { addCard, getCards } from "../../store/actions/CardActions";
 
 
 interface IListItemProps {
@@ -31,12 +31,18 @@ interface IListItemProps {
 }
 
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
+  const dispatch = useDispatch();
+  const cardList = useSelector((state: AppState) => state.cards);
+  console.log(cardList)
+  
+  const {id} = useParams()
   const { list } = props;
   const cards = list.cards;
+  useEffect(() => {
+    dispatch(getCards(Number(list.id)))
+  }, [])
+
   
- 
-  const dispatch = useDispatch();
-  const {id} = useParams()
   const emptyForm: ListForm = {
     title: list.title,
     boardId: Number(id)
@@ -158,7 +164,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
             {
               cards && cards.length !== 0  ? (
                 cards.map((card,i) =>(
-                  <ListContent card={card}  key={i} />
+                  <ListContent card={card} key={i} />
                 ))
               )  : <div>no cards</div>
             }

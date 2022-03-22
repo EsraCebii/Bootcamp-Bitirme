@@ -47,6 +47,14 @@ export interface CardForm {
   title: string;
   listId: number;
 }
+
+export interface CardUpdateForm {
+  title: string;
+  listId:number;
+  description?: string;
+  duadate?: Date;
+  order?: number;
+}
 export interface Member {
   id: number;
   username: string;
