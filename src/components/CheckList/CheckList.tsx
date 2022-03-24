@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 import Progress from "./Progress";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import CheckItem from "./CheckItem";
+import CheckListItem from "./CheckListItem";
 import NewCheckItem from "./NewCheckItem";
 
 interface ICheckListProps {
@@ -48,8 +48,8 @@ const CheckList: FunctionComponent<ICheckListProps> = (props) => {
                 </Typography>
               </Box>
               <Progress />
-                <CheckItem item={item} />
-            <NewCheckItem item={item} />
+              <CheckListItem items={item.items} />
+              <NewCheckItem item={item} />
             </Box>
           );
         })}

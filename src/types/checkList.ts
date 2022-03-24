@@ -4,7 +4,7 @@ export interface CheckListState {
   data: CheckListItem[];
   loading: boolean;
   error: string;
-  items: CheckItem[]
+  items: any;
 }
 export interface CheckListItem {
     id: number;
@@ -12,6 +12,7 @@ export interface CheckListItem {
     title: string;
     updatedAt: Date;
     createdAt: Date;
+    items: CheckItem[]
 }
 export interface CheckItemForm {
   checklistId: number;

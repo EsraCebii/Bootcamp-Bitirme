@@ -11,6 +11,7 @@ export const addCheckList =
     dispatch({ type: "ADD_ERROR" });
   }
 };
+
 export const addItem =
 (form: CheckItemForm) => async (dispatch: CheckListDispatch) => {
   dispatch({ type: "ADD_ITEM_START" });

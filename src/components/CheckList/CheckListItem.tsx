@@ -10,17 +10,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { CardItem } from "../../types/boards";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store";
-
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import { CheckItemForm, CheckListItem } from "../../types/checkList";
+import { CheckItem, CheckItemForm, } from "../../types/checkList";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 interface ICommentItemProps {
-    item: CheckListItem;
+    items: CheckItem[];
   }
 
-const CheckItem: FunctionComponent<ICommentItemProps> = (props) => {
-    const {item} = props;
+const CheckListItem: FunctionComponent<ICommentItemProps> = (props) => {
+    const {items} = props;
     const [checked, setChecked] = useState([0]);
     const handleToggle = (value: number) => () => {
         const currentIndex = checked.indexOf(value);
@@ -33,10 +31,12 @@ const CheckItem: FunctionComponent<ICommentItemProps> = (props) => {
         }   
         setChecked(newChecked);
       };
+console.log(items, "items");
 
   return (
+
     <ListItem
-    key={item.id}
+    key={1}
     secondaryAction={
       <IconButton edge="end" aria-label="delete">
         <DeleteOutlineOutlinedIcon />
@@ -64,11 +64,11 @@ const CheckItem: FunctionComponent<ICommentItemProps> = (props) => {
         }}
         fullWidth
         variant="outlined"
-        defaultValue={item.title}
+        defaultValue="title"
       />
     </ListItemButton>
   </ListItem>
   )
 }
 
-export default CheckItem
+export default CheckListItem
