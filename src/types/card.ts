@@ -13,6 +13,14 @@ export interface CardLabel {
   cardId: number;
   labelId: number;
 }
+export interface CardForm {
+  title: string;
+  listId: number;
+  description?: string;
+  duedate?: Date;
+  order?: number;
+
+}
 export interface Label {
   id: number;
   title: string;
@@ -54,16 +62,45 @@ export interface CardForm {
   }
   interface GET_CARDS_SUCCESS {
     type: "GET_CARDS_SUCCESS";
-    payload: Card;
+    payload: Card[];
   }
   interface GET_CARDS_ERROR {
     type: "GET_CARDS_ERROR";
   }
+  interface UPDATE_ERROR {
+    type: "UPDATE_CARD_ERROR";
+  }
+  interface UPDATE_START {
+    type: "UPDATE_CARD_START";
+  }
+  
+  interface UPDATE_SUCCESS {
+    type: "UPDATE_CARD_SUCCESS";
+    payload: Card;
+  }
+  interface DELETE_ERROR {
+    type: "DELETE_CARD_ERROR";
+  }
+  interface DELETE_START {
+    type: "DELETE_CARD_START";
+  }
+  
+  interface DELETE_SUCCESS {
+    type: "DELETE_CARD_SUCCESS";
+    payload: number;
+  }
+
   export type CardAction =
+  | UPDATE_START
+  | UPDATE_SUCCESS
+  | UPDATE_ERROR
   | ADD_START
   | ADD_SUCCESS
   | ADD_ERROR
   | GET_CARDS_START
   | GET_CARDS_SUCCESS
   | GET_CARDS_ERROR
+  | DELETE_START
+  | DELETE_SUCCESS
+  | DELETE_ERROR
   export type CardDispatch = ThunkDispatch<CardState, void, CardAction>;

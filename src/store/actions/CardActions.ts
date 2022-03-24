@@ -13,12 +13,33 @@ export const addCard =
   }
 };
 
-export const getCards = (listId: Card['listId']) => async (dispatch: CardDispatch) => {
+export const getCards = () => async (dispatch: CardDispatch) => {
   dispatch({ type: "GET_CARDS_START" });
   try {
-    const response = await api().get<Card>(`card?listId=${listId}`);
+    const response = await api().get<Card[]>(`card`);
     dispatch({ type: "GET_CARDS_SUCCESS", payload: response.data });
   } catch {
     dispatch({ type: "GET_CARDS_ERROR" });
+  }
+};
+export const updateCard =
+(form: Partial<CardForm>, cardId: number) => async (dispatch: CardDispatch) => {
+  dispatch({ type: "UPDATE_CARD_START" });
+  try {
+    const response = await api().put<Card>("/card/"+ cardId,  form);
+    dispatch({ type: "UPDATE_CARD_SUCCESS", payload: response.data });
+  } catch {
+    dispatch({ type: "UPDATE_CARD_ERROR" });
+  }
+};
+
+export const deleteCard =
+(id: number) => async (dispatch: CardDispatch) => {
+  dispatch({ type: "DELETE_CARD_START" });
+  try {
+    await api().delete<Card>("/card/"+ id);
+    dispatch({ type: "DELETE_CARD_SUCCESS", payload: id });
+  } catch {
+    dispatch({ type: "DELETE_CARD_ERROR" });
   }
 };

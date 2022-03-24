@@ -8,7 +8,8 @@ import {  getLists } from "../../store/actions/ListActions";
 
 
 const  BoardArea = () => {
-  const dispatch = useDispatch ()
+  
+
 const lists = useSelector((state: AppState) => state.boards.currentBoard.lists);
   return (
     <Grid

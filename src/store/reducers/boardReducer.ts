@@ -9,6 +9,8 @@ const defaultState: BoardState = {
     title: "",
     ownerId: 0,
     lists: [
+
+      
     ],
     createdAt: "",
     updatedAt: "",
@@ -61,6 +63,20 @@ const boardReducer = (
           lists: [action.payload, ...state.currentBoard.lists],
         },
       };
+      // case "ADD_CARD_ERROR":
+      //   return { ...state, loading: false, error: "Error adding card.. " };
+      // case "ADD_CARD_START":
+      //   return { ...state, loading: true, error: "" };
+      // case "ADD_CARD_SUCCESS":
+      //   return {
+      //     ...state,
+      //     loading: false,
+      //     currentBoard: {
+      //       ...state.currentBoard,
+      //       lists: [ ...state.currentBoard.lists , state.currentBoard.lists
+      //         : [action.payload, ...state.currentBoard.list ],
+      //     },
+      //   };
     case "UPDATE_BOARD_START":
       return { ...state, loading: true, error: "" };
     case "UPDATE_BOARD_SUCCESS":

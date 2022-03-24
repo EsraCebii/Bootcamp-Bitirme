@@ -14,7 +14,7 @@ import Menu from "@mui/material/Menu";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import ListContent from "../List/ListContent";
+import ListContent from "../Cards/ListContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -31,25 +31,28 @@ interface IListItemProps {
 }
 
 const ListItem: FunctionComponent<IListItemProps> = (props) => {
-  const dispatch = useDispatch();
-  const cardList = useSelector((state: AppState) => state.cards);
-  console.log(cardList)
-  
+   
   const {id} = useParams()
   const { list } = props;
-  const cards = list.cards;
-  useEffect(() => {
-    dispatch(getCards(Number(list.id)))
-  }, [])
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getCards())
+  }, [])
   
+  const cardsTotal = useSelector((state: AppState) => state.cards.data);
+  const cards = cardsTotal.filter((item) =>  item.listId === list.id ) //implcit arrow func return
+
+  // const cards = list.cards;
+
+
   const emptyForm: ListForm = {
     title: list.title,
     boardId: Number(id)
   };
   const defaultForm: CardForm = {
     title: "",
-    listId: Number(list.id)
+    listId: Number(list.id),
   };
   const [form, setForm] = useState<ListForm>(emptyForm);
   const [cardForm, setCardForm] = useState<CardForm>(defaultForm);

@@ -27,6 +27,36 @@ const cardReducer = (
       };
     case "ADD_CARD_ERROR":
       return { ...state, loading: false, error: "Error adding cards.. " };
+      case "UPDATE_CARD_START":
+        return { ...state, loading: true, error: "" };
+      case "UPDATE_CARD_SUCCESS":
+        return {
+          ...state,
+          loading: false,
+          data: state.data.map((card) =>
+            card.id === action.payload.id ? action.payload : card
+          ),
+        };
+      case "UPDATE_CARD_ERROR":
+        return {
+          ...state,
+          loading: false,
+          error: "Error updating card.. ",
+        };
+        case "DELETE_CARD_START":
+          return { ...state, loading: true, error: "" };
+        case "DELETE_CARD_SUCCESS":
+          return {
+            ...state,
+            loading: false,
+            data: state.data.filter((card) => card.id !== action.payload),
+          };
+        case "DELETE_CARD_ERROR":
+          return {
+            ...state,
+            loading: false,
+            error: "Error deleting card.. ",
+          };
     default:
       return state;
   }

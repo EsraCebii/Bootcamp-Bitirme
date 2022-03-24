@@ -31,10 +31,10 @@ interface IListContentProps {
 }
 const ListContent: FunctionComponent<IListContentProps> = (props) => {
   const { card } = props;
-  console.log(card);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
 
   return (
     <>
@@ -86,6 +86,7 @@ const ListContent: FunctionComponent<IListContentProps> = (props) => {
             />
           </Box>
           <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24, my: 1 }} />
+          
         </CardContent>
         <Divider />
 

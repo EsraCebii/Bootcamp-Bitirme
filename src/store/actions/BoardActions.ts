@@ -34,7 +34,7 @@ export const addBoard =
   (form: ListForm) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "ADD_LIST_START" });
     try {
-      const response = await api().post<any>("/list", form);
+      const response = await api().post<List>("/list", form);
       dispatch({ type: "ADD_LIST_SUCCESS", payload: response.data });
     } catch {
       dispatch({ type: "ADD_LIST_ERROR" });
@@ -65,7 +65,7 @@ export const addBoard =
   (form: Partial<ListForm>, listId: number) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "UPDATE_BOARD_START" });
     try {
-      const response = await api().put<Board>("/list/"+ listId,  form);
+      const response = await api().put<any>("/list/"+ listId,  form);
       dispatch({ type: "UPDATE_BOARD_SUCCESS", payload: response.data });
     } catch {
       dispatch({ type: "UPDATE_BOARD_ERROR" });
@@ -85,7 +85,7 @@ export const addBoard =
   (id: number) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "DELETE_LIST_START" });
     try {
-      await api().delete<any>("/list/"+ id);
+      await api().delete<List>("/list/"+ id);
       dispatch({ type: "DELETE_LIST_SUCCESS", payload: id });
     } catch {
       dispatch({ type: "DELETE_LIST_ERROR" });

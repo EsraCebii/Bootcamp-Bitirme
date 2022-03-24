@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Typography } from "@mui/material";
 
-export default function CheckListProgress() {
+export default function Progress() {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
