@@ -1,4 +1,5 @@
-import { CardDispatch, CardForm, Card } from "../../types/card";
+import { CardDispatch, CardForm, Card, Label } from "../../types/card";
+import { LabelForm } from "../../types/labels";
 
 import api from "../../utils/api";
 
@@ -51,5 +52,25 @@ export const deleteCard =
     dispatch({ type: "DELETE_CARD_SUCCESS", payload: id });
   } catch {
     dispatch({ type: "DELETE_CARD_ERROR" });
+  }
+};
+export const addLabel =
+(form: LabelForm) => async (dispatch: CardDispatch) => {
+  dispatch({ type: "ADD_LABEL_START" });
+  try {
+    const response = await api().post<Label>("/card-label", form);
+    dispatch({ type: "ADD_LABEL_SUCCESS", payload: response.data });
+  } catch {
+    dispatch({ type: "ADD_LABEL_ERROR" });
+  }
+};
+export const deleteLabel =
+(id: number) => async (dispatch: CardDispatch) => {
+  dispatch({ type: "DELETE_LABEL_START" });
+  try {
+    await api().delete<Label>("/card-label/"+ id);
+    dispatch({ type: "DELETE_LABEL_SUCCESS", payload: id });
+  } catch {
+    dispatch({ type: "DELETE_LABEL_ERROR" });
   }
 };

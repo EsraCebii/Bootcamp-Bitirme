@@ -79,6 +79,7 @@ export interface Owner {
 export interface BoardForm {
   title: string;
 }
+
 interface GET_START {
   type: "GET_BOARDS_START";
 }

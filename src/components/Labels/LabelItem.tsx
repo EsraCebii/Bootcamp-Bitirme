@@ -10,11 +10,7 @@ import { Label, LabelForm } from "../../types/labels";
 import Checkbox from "@mui/material/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
-import {
-  addLabel,
-  deleteLabel,
-  getLabels,
-} from "../../store/actions/LabelActions";
+import { addLabel, deleteLabel, getCard } from "../../store/actions/CardActions";
 
 interface ILabelProps {
   label: Label;
@@ -23,6 +19,7 @@ const LabelItem: FunctionComponent<ILabelProps> = (props) => {
   const { label } = props;
   const dispatch = useDispatch();
   const currentCard = useSelector((state: AppState) => state.cards.currentCard);
+  
   const emptyForm: LabelForm = {
     cardId: currentCard.id,
     labelId: label.id,
@@ -35,14 +32,16 @@ const LabelItem: FunctionComponent<ILabelProps> = (props) => {
     if (e.target.checked) {
       setForm({ ...form, labelId: Number(e.target.id) });
       dispatch(addLabel(form));
-      console.log(form)
+      dispatch(getCard(Number(currentCard.id)))
     } else {
+      console.log(e.target)
       let deletedLabel = currentCard.labels.find(
         (label: any) => e.target.id == label.id
       );
-      dispatch(deleteLabel(deletedLabel.CardLabel.id));
+      dispatch(deleteLabel(Number(deletedLabel.CardLabel.id)));
+      dispatch(getCard(Number(currentCard.id)))
     }
-    dispatch(getLabels());
+  
   };
   return (
     <ListItem

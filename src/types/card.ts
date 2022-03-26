@@ -36,8 +36,8 @@ export interface Card {
   description?: any;
   order?: any;
   duedate?: any;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: any;
+  updatedAt: any;
   listId: number;
   labels: any[];
   checklists: any[];
@@ -46,6 +46,28 @@ export interface Card {
 export interface CardForm {
     title: string;
     listId: number;
+}
+interface DELETE_LABEL_ERROR {
+  type: "DELETE_LABEL_ERROR";
+}
+interface DELETE_LABEL_START {
+  type: "DELETE_LABEL_START";
+}
+
+interface DELETE_LABEL_SUCCESS {
+  type: "DELETE_LABEL_SUCCESS";
+  payload: number;
+}
+interface ADD_LABEL_START {
+  type: "ADD_LABEL_START";
+}
+
+interface ADD_LABEL_SUCCESS {
+  type: "ADD_LABEL_SUCCESS";
+  payload: Label;
+}
+interface ADD_LABEL_ERROR {
+  type: "ADD_LABEL_ERROR";
 }
   interface ADD_START {
     type: "ADD_CARD_START";
@@ -117,4 +139,10 @@ export interface CardForm {
   | DELETE_START
   | DELETE_SUCCESS
   | DELETE_ERROR
+  | DELETE_LABEL_START
+  | DELETE_LABEL_SUCCESS
+  | DELETE_LABEL_ERROR
+  | ADD_LABEL_START
+  | ADD_LABEL_SUCCESS
+  | ADD_LABEL_ERROR
   export type CardDispatch = ThunkDispatch<CardState, void, CardAction>;
