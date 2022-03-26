@@ -11,6 +11,10 @@ import userReducer from "./reducers/userReducer";
 import checkListReducer from "./reducers/checkListReducer"
 import { CommentState } from "../types/comments";
 import commentReducer from "./reducers/commentReducer";
+import { ListState } from "../types/lists";
+import listReducer from "./reducers/listReducer";
+import { LabelState } from "../types/labels";
+import labelReducer from "./reducers/labelReducer";
 
 export interface AppState {
     user: UserState;
@@ -19,6 +23,8 @@ export interface AppState {
     cards: CardState;
     checkLists: CheckListState;
     comments: CommentState;
+    lists: ListState;
+    labels: LabelState;
   
 }
 
@@ -29,6 +35,8 @@ const rootReducer = combineReducers<AppState>({
     cards: cardReducer,
     checkLists: checkListReducer,
     comments: commentReducer,
+    lists: listReducer,
+    labels: labelReducer,
 
 })
 

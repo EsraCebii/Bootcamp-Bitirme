@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react";
+import { useState, FunctionComponent, useEffect } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
@@ -15,11 +15,6 @@ import Link from "@mui/material/Link";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Tooltip from "@mui/material/Tooltip";
@@ -27,7 +22,7 @@ import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import ListChip from "../Labels/ListChip";
 import CheckList from "../CheckList/CheckList";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
@@ -37,11 +32,14 @@ import { addCheckList } from "../../store/actions/CheckListActions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { deleteCard, updateCard } from "../../store/actions/CardActions";
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import { CommentForm } from "../../types/comments";
 import { addComment } from "../../store/actions/CommentActions";
-import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import CommentList from "../Comments/CommentList";
+import { getCard } from "../../store/actions/CardActions";
+import LabelItem from "../Labels/LabelItem";
+import { getLabels } from "../../store/actions/LabelActions";
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -97,8 +95,8 @@ function CustomButton(props: ButtonUnstyledProps) {
 
 const labelStyle = {
   position: "absolute" as "absolute",
-  top: "40%",
-  left: "32%",
+  top: "34%",
+  left: "25%",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -141,28 +139,42 @@ interface IListModalProps {
 const ListModal: FunctionComponent<IListModalProps> = (props) => {
   const { card, setOpen } = props;
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCard(Number(card.id)));
+    dispatch(getLabels());
+    console.log(card, "card prop")
+  }, []);
+
+  const labelList = useSelector((state: AppState) => state.labels.data);
+
+  const currentCard = useSelector((state: AppState) => state.cards.currentCard);
   const emptyForm: CardUpdateForm = {
     title: card.title,
     listId: card.listId,
+    description: card.description,
   };
+
   const [form, setForm] = useState<CardUpdateForm>(emptyForm);
 
   const emptyCommentForm: CommentForm = {
-    cardId: Number(card.id),
-    message: ""
-  }
-  
+    cardId: card.id,
+    message: "",
+  };
+
   const [commentForm, setCommentForm] = useState<CommentForm>(emptyCommentForm);
 
   const defaultForm: CheckListItemForm = {
     title: "",
-    cardId: Number(card.id),
+    cardId: Number(currentCard.id),
   };
 
   const [checkForm, setCheckForm] = useState<CheckListItemForm>(defaultForm);
 
   const [openLabel, setOpenLabel] = useState(false);
-  const handleOpenLabel = () => setOpenLabel(true);
+  const handleOpenLabel = () => {
+    setOpenLabel(true);
+    console.log(labelList, "labelList");
+  };
   const handleCloseLabel = () => setOpenLabel(false);
 
   const [openInput, setOpenInput] = useState(false);
@@ -187,28 +199,33 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
   const handleAddCheckListTitle = () => {
     dispatch(addCheckList(checkForm));
     setOpenInput(false);
-  
   };
-  const listee = useSelector(
-    (state: AppState) => state.boards.currentBoard.lists
-  );
-  const tekListe = listee.filter((item) => item.id === card.listId);
+
+  const lists = useSelector((state: AppState) => state.lists.data);
+
+  const currentlist = lists.filter((item) => item.id === currentCard.listId);
 
   const boardTitle = useSelector(
     (state: AppState) => state.boards.currentBoard.title
   );
+
   const handleSaveUpdate = () => {
     dispatch(updateCard(form, Number(card.id)));
+    console.log(form);
     setOpen(false)
-  }
+
+  };
   const handleDeleteCard = () => {
-    dispatch(deleteCard(Number(card.id)))
-    setOpen(false)
-  }
+    dispatch(deleteCard(Number(card.id)));
+    setOpen(false);
+  };
   const handleAddComment = () => {
-    dispatch(addComment(commentForm))
-  }
-  
+    dispatch(addComment(commentForm));
+    dispatch(getCard(Number(card.id)));
+    setCommentForm(emptyCommentForm)
+
+  };
+
   return (
     <>
       <Paper style={{ maxHeight: 500, overflowY: "auto" }}>
@@ -222,7 +239,6 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
                 >
                   <DeleteOutlineOutlinedIcon sx={{ fontSize: 30 }} />
                 </IconButton>
-                
               </Box>
 
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -246,41 +262,9 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
                         bgcolor: "background.paper",
                       }}
                     >
-                      {[0, 1, 2, 3].map((value) => {
-                        const labelId = `checkbox-list-label-${value}`;
-
-                        return (
-                          <ListItem
-                            key={value}
-                            secondaryAction={
-                              <IconButton edge="end" aria-label="comments">
-                                <LabelOutlinedIcon />
-                              </IconButton>
-                            }
-                            disablePadding
-                          >
-                            <ListItemButton
-                              role={undefined}
-                              onClick={handleToggle(value)}
-                              dense
-                            >
-                              <ListItemIcon>
-                                <Checkbox
-                                  edge="start"
-                                  checked={checked.indexOf(value) !== -1}
-                                  tabIndex={-1}
-                                  disableRipple
-                                  inputProps={{ "aria-labelledby": labelId }}
-                                />
-                              </ListItemIcon>
-                              <ListItemText
-                                id={labelId}
-                                primary={`Line item ${value + 1}`}
-                              />
-                            </ListItemButton>
-                          </ListItem>
-                        );
-                      })}
+                      {labelList.map((label) => (
+                        <LabelItem label={label} />
+                      ))}
                     </List>
                   </Box>
                 </Modal>
@@ -316,7 +300,7 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
               </Box>
 
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Close list">
+                <Tooltip title="Save updates">
                   <IconButton sx={{ p: 0 }} onClick={handleSaveUpdate}>
                     <SaveOutlinedIcon />
                   </IconButton>
@@ -345,7 +329,7 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
                     color="inherit"
                     href="/getting-started/installation/"
                   >
-                    {tekListe[0].title}
+                    {currentlist[0]?.title}
                   </Link>
                 </Breadcrumbs>
               </div>
@@ -372,6 +356,7 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
               required
               id="titleId"
               label="title"
+              defaultValue={form.title}
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               fullWidth
@@ -405,7 +390,7 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
                 Labels
               </Typography>
             </Box>
-            <ListChip card={card} />
+            <ListChip currentCard={currentCard} />
             <Box
               sx={{
                 display: "flex",
@@ -442,15 +427,15 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
               />
             </Box>
             <CustomButton onClick={handleAddComment}>Add</CustomButton>
-           
-            <CheckList card={card} />
+
+            <CheckList currentCard={currentCard} />
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
               }}
             >
-              <NotesOutlinedIcon />
+              <ListAltOutlinedIcon />
               <Typography
                 sx={{ ml: 1 }}
                 variant="subtitle1"
@@ -459,7 +444,7 @@ const ListModal: FunctionComponent<IListModalProps> = (props) => {
               >
                 Activity
               </Typography>
-     <CommentList card={card} />
+              <CommentList currentCard={currentCard} />
             </Box>
           </CardContent>
         </Box>

@@ -4,16 +4,20 @@ import ListItemButton from "@mui/material/ListItemButton";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
-import { CheckItemForm, CheckListItem } from "../../types/checkList";
+import { useDispatch, useSelector } from "react-redux";
+import { CheckItemForm, ICheckListItem } from "../../types/checkList";
 import { addItem } from "../../store/actions/CheckListActions";
+import { AppState } from "../../store";
+import { useParams } from "react-router-dom";
+import { getBoard } from "../../store/actions/BoardActions";
 
 interface ICommentItemProps {
-  item: CheckListItem;
+  item: any;
 }
 
 const NewCheckItem: FunctionComponent<ICommentItemProps> = (props) => {
   const { item } = props;
+  const {id }    = useParams();
   const [checked, setChecked] = useState([0]);
   const emptyForm: CheckItemForm = {
     checklistId: item.id,
@@ -25,18 +29,19 @@ const NewCheckItem: FunctionComponent<ICommentItemProps> = (props) => {
 
   const handleAddItem = () => {
     dispatch(addItem(form));
+    dispatch(getBoard(Number(id)))
   };
 
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete">
+        <IconButton edge="end" aria-label="delete" onClick={handleAddItem} >
           <AddIcon />
         </IconButton>
       }
       disablePadding
     >
-      <ListItemButton role={undefined} dense onClick={handleAddItem}>
+      <ListItemButton role={undefined} dense >
         <TextField
           fullWidth
           value={form.title}

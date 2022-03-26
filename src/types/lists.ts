@@ -16,6 +16,10 @@ export interface List {
   cards: Card[];
   board: Board;
 }
+export interface ListForm {
+  title: string;
+  boardId: number;
+}
 export interface Board {
   id: number;
   title: string;
@@ -92,6 +96,29 @@ interface DELETE_SUCCESS {
   type: "DELETE_LIST_SUCCESS";
   payload: number;
 }
+
+interface ADD_START {
+  type: "ADD_LIST_START";
+}
+
+interface ADD_SUCCESS {
+  type: "ADD_LIST_SUCCESS";
+  payload: List;
+}
+interface ADD_ERROR {
+  type: "ADD_LIST_ERROR";
+}
+interface UPDATE_LIST_ERROR {
+  type: "UPDATE_LIST_ERROR";
+}
+interface UPDATE_LIST_START {
+  type: "UPDATE_LIST_START";
+}
+
+interface UPDATE_LIST_SUCCESS {
+  type: "UPDATE_LIST_SUCCESS";
+  payload: List;
+}
 export type ListAction =
   | GET_START
   | GET_SUCCESS
@@ -101,6 +128,12 @@ export type ListAction =
   | GET_LISTS_ERROR
   | DELETE_START
   | DELETE_SUCCESS
-  | DELETE_ERROR;
+  | DELETE_ERROR
+  | ADD_START
+  | ADD_SUCCESS
+  | ADD_ERROR
+  | UPDATE_LIST_START
+  | UPDATE_LIST_SUCCESS
+  | UPDATE_LIST_ERROR
 
 export type ListDispatch = ThunkDispatch<ListState, void, ListAction>;

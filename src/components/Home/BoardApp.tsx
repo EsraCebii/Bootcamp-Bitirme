@@ -51,7 +51,7 @@ function BoardApp() {
 
         )}
         {data.map((board, i) => (
-          <Grid item xs={2} sm={4} md={4}>
+          <Grid item xs={2} sm={4} md={4} key={i}>
             <BoardCard key={i} board={board} />
           </Grid>
         ))}

@@ -24,7 +24,7 @@ export interface LabelState {
   
   interface ADD_LABEL_SUCCESS {
     type: "ADD_LABEL_SUCCESS";
-    payload: Comment;
+    payload: Label;
   }
   interface ADD_LABEL_ERROR {
     type: "ADD_LABEL_ERROR";
@@ -40,7 +40,16 @@ export interface LabelState {
     type: "DELETE_LABEL_SUCCESS";
     payload: number;
   }
-
+  interface GET_START {
+    type: "GET_LABELS_START";
+  }
+  interface GET_SUCCESS {
+    type: "GET_LABELS_SUCCESS";
+    payload: Label[];
+  }
+  interface GET_ERROR {
+    type: "GET_LABELS_ERROR";
+  }
   export type LabelAction =
   | ADD_LABEL_START
   | ADD_LABEL_SUCCESS
@@ -48,4 +57,7 @@ export interface LabelState {
   | DELETE_START
   | DELETE_SUCCESS
   | DELETE_ERROR
+  | GET_START
+  | GET_SUCCESS
+  | GET_ERROR
   export type LabelDispatch = ThunkDispatch<LabelState, void, LabelAction>;

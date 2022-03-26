@@ -8,9 +8,11 @@ import Card from "@mui/material/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { ListForm } from "../../types/boards";
-import { addList, getBoard } from "../../store/actions/BoardActions";
+import { addList, getLists } from "../../store/actions/ListActions";
+import { useParams } from "react-router-dom";
 
 function NewList() {
+  const { id } = useParams();
   const boardId = useSelector((state: AppState) => state.boards.currentBoard.id);
   
   const [isAdd, setIsAdd] = useState(false);
@@ -25,14 +27,16 @@ function NewList() {
   };
   const [form, setForm] = useState<ListForm>(defaultForm);
 
- 
-
   const handleAddListTitle = () => {
     listTitle && setAddCardMode(true);
     dispatch(addList(form))
+    dispatch(getLists(Number(id)))
     setForm(defaultForm)
-    dispatch(getBoard(Number(boardId)))
   };
+  const handleClose = () => {
+    setForm(defaultForm);
+    setIsAdd(false)
+  }
 
 
   return (
@@ -57,7 +61,7 @@ function NewList() {
               value={form.title}
               onChange={(e) => setForm({ boardId: Number(boardId), title: e.target.value })}
             />
-            <CloseIcon sx={{ mt: 3 }} onClick={() => { setForm({ ...form, title: "" }); setForm(defaultForm)}} />
+            <CloseIcon sx={{ mt: 3 }} onClick={handleClose} />
 
             <Button
               variant="contained"

@@ -1,58 +1,27 @@
 import { useState, FunctionComponent, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import AddIcon from "@mui/icons-material/Add";
 import { CardItem } from "../../types/boards";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
-import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import Progress from "./Progress";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import CheckListItem from "./CheckListItem";
-import NewCheckItem from "./NewCheckItem";
+import { ICheckListItem } from "../../types/checkList";
+import Item from "./Item";
 
 interface ICheckListProps {
-  card: CardItem;
+  currentCard: CardItem;
 }
+
 const CheckList: FunctionComponent<ICheckListProps> = (props) => {
-  const { card } = props;
-  const checkLists = useSelector((state: AppState) => state.checkLists.data);
+  const { currentCard } = props;
+  const checkLists = currentCard?.checklists;
+  console.log(checkLists, "checkLists");
 
   return (
     <>
       <List sx={{ width: "100%" }}>
-        {checkLists.map((item) => {
-          return (
-            <Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: 4,
-                }}
-              >
-                <CheckBoxOutlinedIcon />
-                <Typography
-                  sx={{ ml: 1, mb: 3 }}
-                  variant="subtitle1"
-                  gutterBottom
-                  component="div"
-                >
-                  {item.title}
-                </Typography>
-              </Box>
-              <Progress />
-              <CheckListItem items={item.items} />
-              <NewCheckItem item={item} />
-            </Box>
-          );
-        })}
+        { checkLists?.map((item) => 
+           <Item item={item} key={item.id} />
+        )}
       </List>
     </>
   );

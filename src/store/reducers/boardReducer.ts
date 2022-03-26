@@ -1,27 +1,10 @@
-import { BoardAction, BoardState } from "../../types/boards";
+import { Board, BoardAction, BoardState } from "../../types/boards";
 
 const defaultState: BoardState = {
   data: [],
   loading: false,
   error: "",
-  currentBoard: {
-    id: 0,
-    title: "",
-    ownerId: 0,
-    lists: [
-
-      
-    ],
-    createdAt: "",
-    updatedAt: "",
-    owner: {
-      id: 0,
-      username: "",
-      createdAt: "",
-      updatedAt: "",
-    },
-    members: [],
-  },
+  currentBoard: {} as Board,
 };
 const boardReducer = (
   state: BoardState = defaultState,
@@ -50,19 +33,6 @@ const boardReducer = (
       };
     case "ADD_BOARD_ERROR":
       return { ...state, loading: false, error: "Error adding boards.. " };
-    case "ADD_LIST_ERROR":
-      return { ...state, loading: false, error: "Error adding list.. " };
-    case "ADD_LIST_START":
-      return { ...state, loading: true, error: "" };
-    case "ADD_LIST_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        currentBoard: {
-          ...state.currentBoard,
-          lists: [action.payload, ...state.currentBoard.lists],
-        },
-      };
       // case "ADD_CARD_ERROR":
       //   return { ...state, loading: false, error: "Error adding card.. " };
       // case "ADD_CARD_START":
@@ -93,22 +63,6 @@ const boardReducer = (
         loading: false,
         error: "Error updating board.. ",
       };
-    case "UPDATE_LIST_START":
-      return { ...state, loading: true, error: "" };
-    case "UPDATE_LIST_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        data: state.currentBoard.lists.map((list) =>
-          list.id === action.payload.id ? action.payload : list
-        ),
-      };
-    case "UPDATE_LIST_ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: "Error updating list.. ",
-      };
     case "DELETE_BOARD_START":
       return { ...state, loading: true, error: "" };
     case "DELETE_BOARD_SUCCESS":
@@ -122,22 +76,6 @@ const boardReducer = (
         ...state,
         loading: false,
         error: "Error deleting board.. ",
-      };
-    case "DELETE_LIST_START":
-      return { ...state, loading: true, error: "" };
-    case "DELETE_LIST_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        data: state.currentBoard.lists.filter(
-          (list) => list.id !== action.payload
-        ),
-      };
-    case "DELETE_LIST_ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: "Error deleting list.. ",
       };
     default:
       return state;

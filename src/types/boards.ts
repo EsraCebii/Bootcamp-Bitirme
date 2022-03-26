@@ -50,7 +50,7 @@ export interface CardForm {
 
 export interface CardUpdateForm {
   title: string;
-  listId:number;
+  listId: number;
   description?: string;
   duadate?: Date;
   order?: number;
@@ -122,17 +122,6 @@ interface UPDATE_SUCCESS {
   type: "UPDATE_BOARD_SUCCESS";
   payload: Board;
 }
-interface UPDATE_LIST_ERROR {
-  type: "UPDATE_LIST_ERROR";
-}
-interface UPDATE_LIST_START {
-  type: "UPDATE_LIST_START";
-}
-
-interface UPDATE_LIST_SUCCESS {
-  type: "UPDATE_LIST_SUCCESS";
-  payload: List;
-}
 interface DELETE_ERROR {
   type: "DELETE_BOARD_ERROR";
 }
@@ -145,28 +134,6 @@ interface DELETE_SUCCESS {
   payload: number;
 }
 
-interface DELETE_LIST_ERROR {
-  type: "DELETE_LIST_ERROR";
-}
-interface DELETE_LIST_START {
-  type: "DELETE_LIST_START";
-}
-
-interface DELETE_LIST_SUCCESS {
-  type: "DELETE_LIST_SUCCESS";
-  payload: number;
-}
-interface ADD_LIST_START {
-  type: "ADD_LIST_START";
-}
-
-interface ADD_LIST_SUCCESS {
-  type: "ADD_LIST_SUCCESS";
-  payload: List;
-}
-interface ADD_LIST_ERROR {
-  type: "ADD_LIST_ERROR";
-}
 interface ADD_CARD_START {
   type: "ADD_CARD_START";
 }
@@ -188,23 +155,14 @@ export type BoardAction =
   | ADD_START
   | ADD_SUCCESS
   | ADD_ERROR
-  | ADD_LIST_START
-  | ADD_LIST_SUCCESS
-  | ADD_LIST_ERROR
   | ADD_CARD_START
   | ADD_CARD_SUCCESS
   | ADD_CARD_ERROR
   | UPDATE_START
   | UPDATE_SUCCESS
   | UPDATE_ERROR
-  | UPDATE_LIST_START
-  | UPDATE_LIST_SUCCESS
-  | UPDATE_LIST_ERROR
   | DELETE_START
   | DELETE_SUCCESS
-  | DELETE_ERROR
-  | DELETE_LIST_START
-  | DELETE_LIST_SUCCESS
-  | DELETE_LIST_ERROR;
+  | DELETE_ERROR;
 
 export type BoardDispatch = ThunkDispatch<BoardState, void, BoardAction>;

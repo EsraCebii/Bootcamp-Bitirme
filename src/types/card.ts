@@ -4,6 +4,7 @@ export interface CardState {
   data: Card[];
   loading: boolean;
   error: string;
+  currentCard: Card;
 
 }
 export interface CardLabel {
@@ -67,6 +68,16 @@ export interface CardForm {
   interface GET_CARDS_ERROR {
     type: "GET_CARDS_ERROR";
   }
+  interface GET_CARD_START {
+    type: "GET_CARD_START";
+  }
+  interface GET_CARD_SUCCESS {
+    type: "GET_CARD_SUCCESS";
+    payload: Card;
+  }
+  interface GET_CARD_ERROR {
+    type: "GET_CARD_ERROR";
+  }
   interface UPDATE_ERROR {
     type: "UPDATE_CARD_ERROR";
   }
@@ -100,6 +111,9 @@ export interface CardForm {
   | GET_CARDS_START
   | GET_CARDS_SUCCESS
   | GET_CARDS_ERROR
+  | GET_CARD_START
+  | GET_CARD_SUCCESS
+  | GET_CARD_ERROR
   | DELETE_START
   | DELETE_SUCCESS
   | DELETE_ERROR

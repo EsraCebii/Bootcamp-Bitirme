@@ -20,10 +20,10 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { CardForm, List, ListForm } from "../../types/boards";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteList, getBoard, updateList } from "../../store/actions/BoardActions";
 import { useParams } from "react-router-dom";
 import { AppState } from "../../store";
 import { addCard, getCards } from "../../store/actions/CardActions";
+import { deleteList, updateList } from "../../store/actions/ListActions";
 
 
 interface IListItemProps {
@@ -41,9 +41,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
   }, [])
   
   const cardsTotal = useSelector((state: AppState) => state.cards.data);
-  const cards = cardsTotal.filter((item) =>  item.listId === list.id ) //implcit arrow func return
-
-  // const cards = list.cards;
+  const cards = cardsTotal.filter((item) =>  item.listId === list.id );
 
 
   const emptyForm: ListForm = {
@@ -82,16 +80,17 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
   };
   const handleDeleteList = () => {
     dispatch(deleteList(Number(list.id)))
-    dispatch(getBoard(Number(id)))
   }
   const handleEditListTitle = () => {
     dispatch(updateList(form, Number(list.id)))
-    dispatch(getBoard(Number(id)))
     handleCloseEditModal() 
   }
   const handleEditCard = () => {
-    dispatch(addCard(cardForm));
-    setOpenEditModal(false);
+    if(cardForm.title !== "") {
+      dispatch(addCard(cardForm));
+      setAddCardTitleMode(false)
+    }
+    setAddCardTitleMode(false)
   }
 
   return (
@@ -167,7 +166,7 @@ const ListItem: FunctionComponent<IListItemProps> = (props) => {
             {
               cards && cards.length !== 0  ? (
                 cards.map((card,i) =>(
-                  <ListContent card={card} key={i} />
+                  <ListContent card={card} key={i}  />
                 ))
               )  : <div>no cards</div>
             }

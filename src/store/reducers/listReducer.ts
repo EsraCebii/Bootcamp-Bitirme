@@ -51,6 +51,32 @@ const listReducer = (state: ListState = defaultState, action: ListAction) => {
         loading: false,
         error: "Error deleting list.. ",
       };
+    case "ADD_LIST_START":
+      return { ...state, loading: true, error: "" };
+    case "ADD_LIST_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        data: [action.payload, ...state.data],
+      };
+    case "ADD_LIST_ERROR":
+      return { ...state, loading: false, error: "Error adding list.. " };
+    case "UPDATE_LIST_START":
+      return { ...state, loading: true, error: "" };
+    case "UPDATE_LIST_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        data: state.data.map((board) =>
+          board.id === action.payload.id ? action.payload : board
+        ),
+      };
+    case "UPDATE_LIST_ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: "Error updating list.. ",
+      };
     default:
       return state;
   }

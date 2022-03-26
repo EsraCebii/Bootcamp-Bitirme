@@ -11,6 +11,8 @@ import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlin
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { CardItem } from "../../types/boards";
+import { getCard } from "../../store/actions/CardActions";
+
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,7 +36,7 @@ const ListContent: FunctionComponent<IListContentProps> = (props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+ 
 
   return (
     <>
@@ -101,7 +103,7 @@ const ListContent: FunctionComponent<IListContentProps> = (props) => {
           <IconButton aria-label="open Modal" onClick={handleOpen}>
             <VisibilityIcon />
           </IconButton>
-          {card.comments.length !== 0 && (
+          {card.comments && card.comments.length !== 0 && (
             <IconButton>
               <InsertCommentOutlinedIcon />
             </IconButton>

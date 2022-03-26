@@ -1,4 +1,4 @@
-import { Board, BoardDispatch, BoardForm, CardForm, CardItem, List, ListForm } from "../../types/boards";
+import { Board, BoardDispatch, BoardForm, CardForm, CardItem } from "../../types/boards";
 import api from "../../utils/api";
 
 export const getBoards = () => async (dispatch: BoardDispatch) => {
@@ -30,16 +30,6 @@ export const addBoard =
       dispatch({ type: "ADD_BOARD_ERROR" });
     }
   };
-  export const addList =
-  (form: ListForm) => async (dispatch: BoardDispatch) => {
-    dispatch({ type: "ADD_LIST_START" });
-    try {
-      const response = await api().post<List>("/list", form);
-      dispatch({ type: "ADD_LIST_SUCCESS", payload: response.data });
-    } catch {
-      dispatch({ type: "ADD_LIST_ERROR" });
-    }
-  };
   export const addCard =
   (form: CardForm) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "ADD_CARD_START" });
@@ -61,16 +51,6 @@ export const addBoard =
       dispatch({ type: "UPDATE_BOARD_ERROR" });
     }
   };
-  export const updateList =
-  (form: Partial<ListForm>, listId: number) => async (dispatch: BoardDispatch) => {
-    dispatch({ type: "UPDATE_BOARD_START" });
-    try {
-      const response = await api().put<any>("/list/"+ listId,  form);
-      dispatch({ type: "UPDATE_BOARD_SUCCESS", payload: response.data });
-    } catch {
-      dispatch({ type: "UPDATE_BOARD_ERROR" });
-    }
-  };
   export const deleteBoard =
   (boardId: number) => async (dispatch: BoardDispatch) => {
     dispatch({ type: "DELETE_BOARD_START" });
@@ -79,15 +59,5 @@ export const addBoard =
       dispatch({ type: "DELETE_BOARD_SUCCESS", payload: boardId });
     } catch {
       dispatch({ type: "DELETE_BOARD_ERROR" });
-    }
-  };
-  export const deleteList =
-  (id: number) => async (dispatch: BoardDispatch) => {
-    dispatch({ type: "DELETE_LIST_START" });
-    try {
-      await api().delete<List>("/list/"+ id);
-      dispatch({ type: "DELETE_LIST_SUCCESS", payload: id });
-    } catch {
-      dispatch({ type: "DELETE_LIST_ERROR" });
     }
   };
