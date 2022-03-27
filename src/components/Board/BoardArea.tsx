@@ -6,6 +6,7 @@ import { AppState } from "../../store";
 import { useEffect } from "react";
 import {  getLists } from "../../store/actions/ListActions";
 import { useParams } from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
 const  BoardArea = () => {
@@ -16,6 +17,7 @@ const  BoardArea = () => {
   }, [])
   
 const lists = useSelector((state: AppState) => state.lists.data);
+
   return (
     <Grid
       container

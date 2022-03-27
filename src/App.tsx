@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import BoardApp from "./components/Home/BoardApp";
@@ -7,8 +7,8 @@ import Paper from "@mui/material/Paper";
 import Board from "./components/Board/Board";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
-import NewBoard from "./components/Board/NewBoard"
-
+import NewBoard from "./components/Board/NewBoard";
+import PrivateRoute from "./components/PrivateRoute";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,16 +21,28 @@ const Item = styled(Paper)(({ theme }) => ({
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 
 function App() {
+  const [token, setToken] = useState<any>();
+
+  const getToken = () => {
+    let token = localStorage.getItem("token");
+    return token
+  }
+
+  useEffect(() => {
+    setToken(getToken())
+  },[])
   return (
     <>
       <ThemeProvider theme={darkTheme}>
         <Routes>
-        <Route path="/" element={<Register /> } />
-        <Route path="/login" element={<Login /> } />
-        <Route path="/boards" element={<BoardApp />} />
-         <Route path="board/:id"  element={<Board />} />
-        <Route path="/newBoard" element={<NewBoard />} />
-      </Routes>
+          <Route path="/" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<PrivateRoute  token = {token}/>}>
+          <Route  path="/boards" element={<BoardApp />} />
+          <Route  path="board/:id" element={<Board />} />
+          <Route  path="/newBoard" element={<NewBoard />} />
+          </Route>
+        </Routes>
       </ThemeProvider>
     </>
   );

@@ -58,7 +58,7 @@ const dispatch = useDispatch();
           sx={{ marginBottom: 2 }}
           severity="success"
         >
-          `${data.username} successfully logged in!`
+          {data.username} successfully logged in!
         </Alert>
       )}
       <form onSubmit={formik.handleSubmit}>
