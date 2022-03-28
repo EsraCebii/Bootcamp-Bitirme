@@ -1,5 +1,6 @@
 import { CardDispatch, CardForm, Card, Label } from "../../types/card";
 import { LabelForm } from "../../types/labels";
+import { Drag } from "../../types/lists";
 
 import api from "../../utils/api";
 

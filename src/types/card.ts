@@ -1,4 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
+import { Drag } from "./lists";
 
 export interface CardState {
   data: Card[];
@@ -47,6 +48,7 @@ export interface CardForm {
     title: string;
     listId: number;
 }
+
 interface DELETE_LABEL_ERROR {
   type: "DELETE_LABEL_ERROR";
 }

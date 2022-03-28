@@ -67,8 +67,8 @@ const BoardCard: FunctionComponent<IBoardCardProps> = (props) => {
           >
             {board.members.length > 0 ? (
               <List>
-                {board.members.map((member) => {
-                  return <MemberModal member={member} />;
+                {board.members.map((member,i) => {
+                  return <MemberModal member={member} key={i} />;
                 })}
               </List>
             ) : (

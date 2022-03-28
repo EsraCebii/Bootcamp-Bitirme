@@ -1,4 +1,4 @@
-import { List, ListDispatch, ListForm } from "../../types/lists";
+import { Drag, DragForm, List, ListDispatch, ListForm } from "../../types/lists";
 import api from "../../utils/api";
 
 export const getLists =
@@ -40,13 +40,38 @@ export const addList = (form: ListForm) => async (dispatch: ListDispatch) => {
   }
 };
 export const updateList =
-  (form: Partial<ListForm>, listId: number) =>
-  async (dispatch: ListDispatch) => {
-    dispatch({ type: "UPDATE_LIST_START" });
-    try {
-      const response = await api().put<any>("/list/" + listId, form);
-      dispatch({ type: "UPDATE_LIST_SUCCESS", payload: response.data });
-    } catch {
-      dispatch({ type: "UPDATE_LIST_ERROR" });
-    }
-  };
+(form: Partial<ListForm>, listId: number) =>
+async (dispatch: ListDispatch) => {
+  dispatch({ type: "UPDATE_LIST_START" });
+  try {
+    const response = await api().put<any>("/list/" + listId, form);
+    dispatch({ type: "UPDATE_LIST_SUCCESS", payload: response.data });
+  } catch {
+    dispatch({ type: "UPDATE_LIST_ERROR" });
+  }
+};
+
+export const dragList =
+(form: Partial<DragForm>, id: number) =>
+async (dispatch: ListDispatch) => {
+  dispatch({ type: "DRAG_LIST_START" });
+  try {
+    const response = await api().put<any>("/list/" + id, form);
+    dispatch({ type: "DRAG_LIST_SUCCESS", payload: response.data });
+  } catch {
+    dispatch({ type: "DRAG_LIST_ERROR" });
+  }
+};
+export const drag2List =
+(form: Partial<DragForm>, id: number) =>
+async (dispatch: ListDispatch) => {
+  dispatch({ type: "DRAG_LIST2_START" });
+  try {
+    const response = await api().put<any>("/list/" + id, form);
+    dispatch({ type: "DRAG_LIST2_SUCCESS", payload: response.data });
+  } catch {
+    dispatch({ type: "DRAG_LIST2_ERROR" });
+  }
+};
+
+

@@ -12,6 +12,7 @@ import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { CardItem } from "../../types/boards";
 import { getCard } from "../../store/actions/CardActions";
+import { Draggable } from "react-beautiful-dnd";
 
 
 const style = {
@@ -30,92 +31,100 @@ const style = {
 
 interface IListContentProps {
   card: CardItem;
+  index:number;
+
 }
 const ListContent: FunctionComponent<IListContentProps> = (props) => {
-  const { card } = props;
+  const { card, index } = props;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
  
 
   return (
-    <>
-      <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left", m: 1 }}>
-        <CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            {card.labels &&
-              card.labels.length !== 0 &&
-              card.labels.map((card, i) => (
-                <Chip
-                  key={i}
-                  size="small"
-                  sx={{
-                    minWidth: "35px",
-                    maxHeight: "8px",
-                    mx: 1,
-                    backgroundColor: card.color,
-                  }}
-                />
-              ))}
-          </Box>
-          <Box>
-            <Typography variant="overline" display="block" sx={{ mt: 1 }}>
-              {card.title}
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Chip
-              label="1/2"
-              sx={{ my: 1 }}
-              avatar={<CheckCircleOutlineRoundedIcon />}
-            />
-            <Chip
-              label={card.duedate}
-              color="error"
-              sx={{ m: 1 }}
-              avatar={<AccessTimeRoundedIcon />}
-            />
-          </Box>
-          <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24, my: 1 }} />
-          
-        </CardContent>
-        <Divider />
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginY: 1,
-            marginX: 2,
-          }}
-        >
-          <IconButton aria-label="open Modal" onClick={handleOpen}>
-            <VisibilityIcon />
-          </IconButton>
-          {card.comments && card.comments.length !== 0 && (
-            <IconButton>
-              <InsertCommentOutlinedIcon />
-            </IconButton>
-          )}
-        </Box>
-      </Card>
-      <Modal open={open} onClose={handleClose}>
-        <Card sx={style}>
-          <ListModal setOpen={setOpen} card={card} />
-        </Card>
-      </Modal>
-    </>
+    <div>
+    <Draggable draggableId={String(card.id)} index={index}>
+      {provided => (
+        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+         <Card sx={{ minWidth: 250, borderRadius: 8, textAlign: "left", m: 1 }}>
+         <CardContent>
+           <Box
+             sx={{
+               display: "flex",
+               flexDirection: "row",
+             }}
+           >
+             {card.labels &&
+               card.labels.length !== 0 &&
+               card.labels.map((card, i) => (
+                 <Chip
+                   key={i}
+                   size="small"
+                   sx={{
+                     minWidth: "35px",
+                     maxHeight: "8px",
+                     mx: 1,
+                     backgroundColor: card.color,
+                   }}
+                 />
+               ))}
+           </Box>
+           <Box>
+             <Typography variant="overline" display="block" sx={{ mt: 1 }}>
+               {card.title}
+             </Typography>
+           </Box>
+ 
+           <Box
+             sx={{
+               display: "flex",
+               flexDirection: "row",
+             }}
+           >
+             <Chip
+               label="1/2"
+               sx={{ my: 1 }}
+               avatar={<CheckCircleOutlineRoundedIcon />}
+             />
+             <Chip
+               label={card.duedate}
+               color="error"
+               sx={{ m: 1 }}
+               avatar={<AccessTimeRoundedIcon />}
+             />
+           </Box>
+           <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24, my: 1 }} />
+           
+         </CardContent>
+         <Divider />
+ 
+         <Box
+           sx={{
+             display: "flex",
+             justifyContent: "space-between",
+             marginY: 1,
+             marginX: 2,
+           }}
+         >
+           <IconButton aria-label="open Modal" onClick={handleOpen}>
+             <VisibilityIcon />
+           </IconButton>
+           {card.comments && card.comments.length !== 0 && (
+             <IconButton>
+               <InsertCommentOutlinedIcon />
+             </IconButton>
+           )}
+         </Box>
+       </Card>
+       </div>
+      )}
+    </Draggable>
+          <Modal open={open} onClose={handleClose}>
+          <Card sx={style}>
+            <ListModal setOpen={setOpen} card={card} />
+          </Card>
+        </Modal>
+        </div>
   );
 };
 export default ListContent;

@@ -1,26 +1,10 @@
-import { ListAction, ListState } from "../../types/lists";
+import { List, ListAction, ListState } from "../../types/lists";
 
 const defaultState: ListState = {
   data: [],
   loading: false,
   error: "",
-  // currentList: {
-  //   id: 0,
-  //   order: 0,
-  //   title: "",
-  //   createdAt: 0,
-  //   updatedAt: 0,
-  //   boardId: 0,
-  //   cards: [],
-  //   board: {
-  //     id: 0,
-  //     title: "",
-  //     createdAt: 0,
-  //     updatedAt: 0,
-  //     ownerId: 0,
-  //     members: [],
-  //   },
-  // },
+  drag: [],
 };
 
 const listReducer = (state: ListState = defaultState, action: ListAction) => {
@@ -31,12 +15,6 @@ const listReducer = (state: ListState = defaultState, action: ListAction) => {
       return { ...state, loading: false, data: action.payload };
     case "GET_LISTS_ERROR":
       return { ...state, loading: false, error: "Error fetching lists" };
-    // case "GET_LIST_START":
-    //   return { ...state, loading: true, error: "" };
-    // case "GET_LIST_SUCCESS":
-    //   return { ...state, loading: false, currentList: action.payload };
-    // case "GET_LIST_ERROR":
-    //   return { ...state, loading: false, error: "Error fetching list" };
     case "DELETE_LIST_START":
       return { ...state, loading: true, error: "" };
     case "DELETE_LIST_SUCCESS":
@@ -77,6 +55,39 @@ const listReducer = (state: ListState = defaultState, action: ListAction) => {
         loading: false,
         error: "Error updating list.. ",
       };
+    case "DRAG_LIST_START":
+      return { ...state, loading: true, error: "" };
+    case "DRAG_LIST_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        data: state.data.map((list) =>
+          list.id === action.payload.id ? action.payload : list
+        ),
+      };
+    case "DRAG_LIST_ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: "Error dragging list.. ",
+      };
+      case "DRAG_LIST2_START":
+        return { ...state, loading: true, error: "" };
+      case "DRAG_LIST2_SUCCESS":
+        return {
+          ...state,
+          loading: false,
+          data: state.data.map((list) =>
+            list.id === action.payload.id ? action.payload : list
+          ),
+        };
+      case "DRAG_LIST2_ERROR":
+        return {
+          ...state,
+          loading: false,
+          error: "Error dragging list.. ",
+        };
+
     default:
       return state;
   }

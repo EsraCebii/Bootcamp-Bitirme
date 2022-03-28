@@ -4,6 +4,7 @@ export interface ListState {
   data: List[];
   loading: boolean;
   error: string;
+  drag: any[]
   // currentList: List;
 }
 export interface List {
@@ -13,12 +14,17 @@ export interface List {
   createdAt: any;
   updatedAt: any;
   boardId: number;
-  cards: Card[];
+  cards: any[];
   board: Board;
 }
 export interface ListForm {
   title: string;
   boardId: number;
+}
+
+export interface DragForm {
+  id: number;
+  list: any;
 }
 export interface Board {
   id: number;
@@ -62,6 +68,13 @@ export interface Label {
 export interface CheckList {
   title: string;
   cardId: number;
+}
+export interface Drag {
+  droppableIdStart:any,
+  droppableIdEnd:any,
+  droppableIndexStart:any,
+  droppableIndexEnd:any,
+  draggableId:number
 }
 
 interface GET_LISTS_START {
@@ -119,6 +132,29 @@ interface UPDATE_LIST_SUCCESS {
   type: "UPDATE_LIST_SUCCESS";
   payload: List;
 }
+interface DRAG_LIST_START {
+  type: "DRAG_LIST_START";
+
+}
+interface DRAG_LIST_SUCCESS {
+  type: "DRAG_LIST_SUCCESS";
+  payload: any;
+}
+interface DRAG_LIST_ERROR {
+  type: "DRAG_LIST_ERROR";
+}
+interface DRAG_LIST2_START {
+  type: "DRAG_LIST2_START";
+
+}
+interface DRAG_LIST2_SUCCESS {
+  type: "DRAG_LIST2_SUCCESS";
+  payload: any;
+}
+interface DRAG_LIST2_ERROR {
+  type: "DRAG_LIST2_ERROR";
+}
+
 export type ListAction =
   | GET_START
   | GET_SUCCESS
@@ -135,5 +171,12 @@ export type ListAction =
   | UPDATE_LIST_START
   | UPDATE_LIST_SUCCESS
   | UPDATE_LIST_ERROR
+  | DRAG_LIST_START
+  | DRAG_LIST_SUCCESS
+  | DRAG_LIST_ERROR
+  | DRAG_LIST2_START
+  | DRAG_LIST2_SUCCESS
+  | DRAG_LIST2_ERROR
+
 
 export type ListDispatch = ThunkDispatch<ListState, void, ListAction>;
