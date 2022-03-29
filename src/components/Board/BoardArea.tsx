@@ -4,7 +4,11 @@ import NewList from "../List/NewList";
 import ListItem from "../List/ListItem";
 import { AppState } from "../../store";
 import { useEffect, useState } from "react";
-import { dragList, getLists, updateList } from "../../store/actions/ListActions";
+import {
+  dragList,
+  getLists,
+  updateList,
+} from "../../store/actions/ListActions";
 import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { DragForm } from "../../types/lists";
@@ -24,53 +28,60 @@ const BoardArea = () => {
   const [form, setForm] = useState<DragForm>(emptyForm);
 
   const lists = useSelector((state: AppState) => state.lists.data);
-  const onDragEnd = (result:any) => {
-    const {destinaion, source, draggableId} =result;
-    console.log(result, "result", destinaion, "destinaion",source,"source");
+  const onDragEnd = (result: any) => {
+    const { destination, source, draggableId } = result;
+    console.log(result, "result", destination, "destination", source, "source");
 
-    if(!destinaion) {
+    if (!destination) {
       return;
     }
-    const sourceList = lists[source.droppableId];
-    const destionationList = lists[destinaion.droppableId]
-    const draggingCard = sourceList.cards.filter(
-      (card) => card.id === draggableId
-    )[0];
-    if(source.droppableId === destinaion.droppableId ) {
-      console.log("eşit")
-      // sourceList.cards.splice(source.index, 1)
-      // destionationList.cards.splice(destinaion.index, 0, draggingCard)
-      // const sourceListId = sourceList.id;
-      // setForm({ id: Number(sourceListId), list: destionationList })
-      // dispatch(dragList(form, sourceListId))
-      // setForm(emptyForm)
-    } else {
-      console.log("else")
-      // sourceList.cards.splice(source.index,1);
-      // destionationList.cards.splice(destinaion.index, 0, draggingCard);
-      // const sourceListId = sourceList.id;
-      // setForm({ id: Number(sourceListId), list: sourceList })
-      // dispatch(dragList(form, sourceListId))
-      // setForm({ id: Number(destionationList.id), list: destionationList })
-      // dispatch(dragList(form, destionationList.id))
+    
+    const sourceList = lists.find(
+      (list: any) => Number(list.id) === Number(source.droppableId)
+    );
 
+    const destionationList = lists.find(
+      (list: any) => list.id === destination.droppableId
+    );
+    const draggingCard = sourceList?.cards?.filter(
+      (card: any) => card.id === draggableId
+    );
+   
+    if (source.droppableId === destination.droppableId) {
+      console.log("step-2 calıstı");
+      const draggingCard = sourceList?.cards?.splice(source.index, 1);
+      draggingCard !== undefined && destionationList?.cards.splice(destination.index, 0, draggingCard);      
+      const sourceListId = sourceList?.id;   
+      setForm({ id: Number(sourceListId), list: destionationList });
+      console.log(sourceListId, "sourceListId", form, sourceList)
+      dispatch(dragList(form, Number(sourceListId)));
+      setForm(emptyForm);
+    } else {
+      sourceList?.cards?.splice(source.index,1);
+      destionationList?.cards.splice(destination.index, 0, draggingCard);
+      const sourceListId = sourceList?.id;
+      setForm({ id: Number(sourceListId), list: sourceList })
+      dispatch(dragList(form, Number(sourceListId)))
+      setForm({ id: Number(destionationList?.id), list: destionationList })
+      destionationList !== undefined &&  dispatch(dragList(form, Number(destionationList.id)))
+     
     }
-  
-  }
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-    <Grid
-      container
-      spacing={{ xs: 2, md: 3 }}
-      columns={{ xs: 4, sm: 8, md: 12 }}
-    >
-      {lists.map((list, i) => (
-        <ListItem key={i} list={list} />
-      ))}
-      <Grid item xs={2} sm={4} md={4}>
-        <NewList />
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {lists.map((list, i) => (
+          <ListItem key={i} list={list} />
+        ))}
+        <Grid item xs={2} sm={4} md={4}>
+          <NewList />
+        </Grid>
       </Grid>
-    </Grid>
     </DragDropContext>
   );
 };

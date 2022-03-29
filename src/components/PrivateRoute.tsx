@@ -1,10 +1,26 @@
+import { Route, Navigate, RouteProps } from "react-router-dom";
 
-import { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+interface PrivateRouteProps extends RouteProps {
+  component: React.FC<RouteProps>;
+  path: string;
+}
 
-const PrivateRoute = (props:any) => {
- 
-  return props.token ? <Outlet /> : <Navigate to="/login" />;
-};
-
-export default PrivateRoute;
+export default function PrivateRoute({
+  component: Component,
+  path,
+}: PrivateRouteProps) {
+  return (
+    <Route
+      path={path}
+      render={(props:any) =>
+        localStorage.getItem('token') ? (
+          <Component {...props} />
+        ) : (
+          <Navigate
+            to={'/login'}
+          />
+        )
+      }
+    />
+  );
+}

@@ -46,6 +46,7 @@ export interface ListForm {
 export interface CardForm {
   title: string;
   listId: number;
+  order: any
 }
 
 export interface CardUpdateForm {

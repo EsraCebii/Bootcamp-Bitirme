@@ -25,23 +25,21 @@ function App() {
 
   const getToken = () => {
     let token = localStorage.getItem("token");
-    return token
-  }
+    return token;
+  };
 
   useEffect(() => {
-    setToken(getToken())
-  },[])
+    setToken(getToken());
+  }, []);
   return (
     <>
       <ThemeProvider theme={darkTheme}>
         <Routes>
           <Route path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route element={<PrivateRoute  token = {token}/>}>
-          <Route  path="/boards" element={<BoardApp />} />
-          <Route  path="board/:id" element={<Board />} />
-          <Route  path="/newBoard" element={<NewBoard />} />
-          </Route>
+          <PrivateRoute  path="/boards"  component={BoardApp} />
+          <PrivateRoute  path="/board/:id"  component={Board} />
+          <PrivateRoute  path="/newBoard"  component={NewBoard} />     
         </Routes>
       </ThemeProvider>
     </>
