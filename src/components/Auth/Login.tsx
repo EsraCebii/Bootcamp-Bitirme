@@ -59,6 +59,8 @@ const dispatch = useDispatch();
           severity="success"
         >
           {data.username} successfully logged in!
+          <br />
+          <Link to="/boards">Go to Scrumboard App </Link>
         </Alert>
       )}
       <form onSubmit={formik.handleSubmit}>

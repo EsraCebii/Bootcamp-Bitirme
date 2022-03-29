@@ -21,25 +21,16 @@ const Item = styled(Paper)(({ theme }) => ({
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 
 function App() {
-  const [token, setToken] = useState<any>();
 
-  const getToken = () => {
-    let token = localStorage.getItem("token");
-    return token;
-  };
-
-  useEffect(() => {
-    setToken(getToken());
-  }, []);
   return (
     <>
       <ThemeProvider theme={darkTheme}>
         <Routes>
           <Route path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <PrivateRoute  path="/boards"  component={BoardApp} />
-          <PrivateRoute  path="/board/:id"  component={Board} />
-          <PrivateRoute  path="/newBoard"  component={NewBoard} />     
+          <Route path='/boards' element={<PrivateRoute component={BoardApp} />} />
+          <Route path='/board/:id' element={<PrivateRoute component={Board} />} />
+          <Route path='/newBoard' element={<PrivateRoute component={NewBoard} />} />    
         </Routes>
       </ThemeProvider>
     </>
